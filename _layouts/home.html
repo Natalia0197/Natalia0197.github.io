@@ -1,0 +1,30 @@
+---
+layout: default
+---
+
+<div class="hero">
+  <h1>Portafolio de <span>Sistemas Operativos</span></h1>
+  <p>Prácticas y reflexiones del curso — Universidad Tecnológica de la Mixteca</p>
+  <span class="badge">🐧 Linux</span>
+  <span class="badge">⚙️ Procesos</span>
+  <span class="badge">🔗 IPC</span>
+  <span class="badge">🧵 Hilos</span>
+</div>
+
+<main>
+  <h2 class="section-title">📚 Prácticas publicadas</h2>
+
+  {% for post in site.posts %}
+  <div class="post-card">
+    <div class="meta">{{ post.date | date: "%d %B %Y" }}</div>
+    <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+    <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
+  </div>
+  {% else %}
+  <div class="post-card">
+    <p style="color:#607d8b; text-align:center;">
+      Las prácticas aparecerán aquí conforme las vayas publicando.
+    </p>
+  </div>
+  {% endfor %}
+</main>
