@@ -1,0 +1,8 @@
+title: Portafolio de Sistemas Operativos
+description: Prácticas del curso de Sistemas Operativos - Universidad Tecnológica de la Mixteca
+author: Natalia
+theme: minima
+lang: es
+
+header_pages:
+  - about.md
