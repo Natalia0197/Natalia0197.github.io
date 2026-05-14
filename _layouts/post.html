@@ -1,0 +1,16 @@
+---
+layout: default
+---
+
+<main>
+  <div class="post-content">
+    <div style="margin-bottom:1.5rem;">
+      <a href="/" style="color:#00d4ff; text-decoration:none; font-size:0.9rem;">← Volver al inicio</a>
+    </div>
+    <h1 style="color:#ffffff; font-size:2rem; margin-bottom:0.5rem;">{{ page.title }}</h1>
+    <p style="color:#607d8b; font-size:0.9rem; margin-bottom:2rem;">
+      {{ page.date | date: "%d %B %Y" }}
+    </p>
+    {{ content }}
+  </div>
+</main>
