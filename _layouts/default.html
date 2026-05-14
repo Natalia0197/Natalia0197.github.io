@@ -8,173 +8,227 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0f0f1a;
-      color: #e0e0e0;
+      font-family: 'Georgia', serif;
+      background: #fafafa;
+      color: #2c2c2c;
       min-height: 100vh;
     }
 
     header {
-      background: linear-gradient(135deg, #1a1a2e, #16213e);
-      border-bottom: 2px solid #00d4ff;
-      padding: 1rem 2rem;
+      background: #ffffff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 1.2rem 3rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     header .logo {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #00d4ff;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #2c2c2c;
       text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
 
     nav a {
-      color: #a0b4c8;
+      color: #888;
       text-decoration: none;
-      margin-left: 1.5rem;
-      font-size: 0.95rem;
+      margin-left: 2rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
       transition: color 0.2s;
     }
 
-    nav a:hover { color: #00d4ff; }
+    nav a:hover { color: #2c2c2c; }
 
     .hero {
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-      padding: 4rem 2rem;
+      background: #ffffff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 5rem 3rem;
       text-align: center;
-      border-bottom: 1px solid #1e3a5f;
     }
 
     .hero h1 {
-      font-size: 2.5rem;
-      color: #ffffff;
+      font-size: 2.2rem;
+      color: #1a1a1a;
+      font-weight: 400;
+      letter-spacing: -0.02em;
       margin-bottom: 1rem;
     }
 
-    .hero h1 span { color: #00d4ff; }
-
     .hero p {
-      color: #a0b4c8;
-      font-size: 1.1rem;
-      max-width: 600px;
+      color: #888;
+      font-size: 1rem;
+      max-width: 500px;
       margin: 0 auto 2rem;
+      line-height: 1.7;
+      font-family: 'Segoe UI', sans-serif;
     }
 
     .badge {
       display: inline-block;
-      background: rgba(0,212,255,0.1);
-      border: 1px solid #00d4ff;
-      color: #00d4ff;
-      padding: 0.3rem 1rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      margin: 0.3rem;
+      border: 1px solid #ddd;
+      color: #888;
+      padding: 0.25rem 0.9rem;
+      border-radius: 2px;
+      font-size: 0.78rem;
+      margin: 0.2rem;
+      font-family: 'Segoe UI', sans-serif;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
 
     main {
-      max-width: 900px;
-      margin: 3rem auto;
+      max-width: 760px;
+      margin: 4rem auto;
       padding: 0 2rem;
     }
 
     .section-title {
-      font-size: 1.5rem;
-      color: #00d4ff;
-      margin-bottom: 1.5rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid #1e3a5f;
+      font-size: 0.78rem;
+      color: #aaa;
+      margin-bottom: 2rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: 'Segoe UI', sans-serif;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #e0e0e0;
     }
 
     .post-card {
-      background: #1a1a2e;
-      border: 1px solid #1e3a5f;
-      border-radius: 10px;
-      padding: 1.5rem;
-      margin-bottom: 1.2rem;
-      transition: border-color 0.2s, transform 0.2s;
+      padding: 1.8rem 0;
+      border-bottom: 1px solid #e0e0e0;
+      transition: opacity 0.2s;
     }
 
-    .post-card:hover {
-      border-color: #00d4ff;
-      transform: translateY(-2px);
+    .post-card:hover { opacity: 0.7; }
+
+    .post-card h2 {
+      font-size: 1.15rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
     }
 
-    .post-card h2 { font-size: 1.1rem; margin-bottom: 0.5rem; }
-    .post-card h2 a { color: #ffffff; text-decoration: none; }
-    .post-card h2 a:hover { color: #00d4ff; }
-    .post-card .meta { color: #607d8b; font-size: 0.85rem; margin-bottom: 0.5rem; }
-    .post-card p { color: #a0b4c8; font-size: 0.95rem; line-height: 1.6; }
+    .post-card h2 a {
+      color: #1a1a1a;
+      text-decoration: none;
+    }
+
+    .post-card .meta {
+      color: #bbb;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+      font-family: 'Segoe UI', sans-serif;
+      letter-spacing: 0.03em;
+    }
+
+    .post-card p {
+      color: #777;
+      font-size: 0.92rem;
+      line-height: 1.7;
+      font-family: 'Segoe UI', sans-serif;
+    }
 
     .post-content {
-      background: #1a1a2e;
-      border: 1px solid #1e3a5f;
-      border-radius: 10px;
-      padding: 2.5rem;
-      line-height: 1.8;
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 2px;
+      padding: 3rem;
+      line-height: 1.9;
     }
 
-    .post-content h1, .post-content h2, .post-content h3 {
-      color: #00d4ff;
-      margin: 1.5rem 0 0.8rem;
+    .post-content h1 {
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: #1a1a1a;
+      margin-bottom: 0.4rem;
     }
 
-    .post-content p { color: #c0cdd8; margin-bottom: 1rem; }
+    .post-content h2 {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #2c2c2c;
+      margin: 2rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .post-content h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #2c2c2c;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .post-content p {
+      color: #444;
+      margin-bottom: 1rem;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 0.97rem;
+    }
 
     .post-content code {
-      background: #0f0f1a;
-      border: 1px solid #1e3a5f;
-      color: #00ff88;
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
+      background: #f4f4f4;
+      border: 1px solid #e0e0e0;
+      color: #c0392b;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
       font-family: 'Courier New', monospace;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
 
     .post-content pre {
-      background: #0a0a14;
-      border: 1px solid #1e3a5f;
-      border-left: 3px solid #00d4ff;
-      border-radius: 8px;
+      background: #f8f8f8;
+      border: 1px solid #e0e0e0;
+      border-left: 3px solid #2c2c2c;
+      border-radius: 2px;
       padding: 1.5rem;
       overflow-x: auto;
-      margin: 1rem 0;
+      margin: 1.2rem 0;
     }
 
     .post-content pre code {
       background: none;
       border: none;
       padding: 0;
-      color: #00ff88;
+      color: #2c2c2c;
+      font-size: 0.88rem;
     }
 
     .post-content img {
       max-width: 100%;
-      border-radius: 8px;
-      border: 1px solid #1e3a5f;
-      margin: 1rem 0;
+      border: 1px solid #e0e0e0;
+      border-radius: 2px;
+      margin: 1.5rem 0;
     }
 
     .post-content ul, .post-content ol {
       padding-left: 1.5rem;
-      color: #c0cdd8;
+      color: #555;
       margin-bottom: 1rem;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 0.97rem;
+      line-height: 1.8;
     }
 
     footer {
       text-align: center;
-      padding: 2rem;
-      color: #607d8b;
-      font-size: 0.85rem;
-      border-top: 1px solid #1e3a5f;
-      margin-top: 4rem;
+      padding: 2.5rem;
+      color: #bbb;
+      font-size: 0.8rem;
+      border-top: 1px solid #e0e0e0;
+      margin-top: 5rem;
+      font-family: 'Segoe UI', sans-serif;
+      letter-spacing: 0.05em;
     }
   </style>
 </head>
 <body>
   <header>
-    <a href="/" class="logo">⚙️ Portafolio SO</a>
+    <a href="/" class="logo">Portafolio · Sistemas Operativos</a>
     <nav>
       <a href="/">Inicio</a>
       <a href="/about">Acerca de</a>
@@ -184,7 +238,7 @@
   {{ content }}
 
   <footer>
-    Natalia — Instituto de Computación, UTM · Sistemas Operativos 2026
+    Natalia — Instituto de Computación, UTM · 2026
   </footer>
 </body>
 </html>
