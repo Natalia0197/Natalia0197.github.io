@@ -1,0 +1,36 @@
+---
+layout: default
+---
+
+<main>
+  <div class="post-content">
+    <div style="margin-bottom:1.5rem;">
+      <a href="/" style="color:#343b1b; text-decoration:underline; font-size:0.85rem; letter-spacing:0.04em;">← Volver al inicio</a>
+    </div>
+
+    <h1 style="font-size:1.7rem; font-weight:600; color:#343b1b; margin-bottom:0.3rem;">
+      {{ page.title }}
+    </h1>
+    <p style="color:#a8b890; font-size:0.8rem; letter-spacing:0.05em; margin-bottom:2.5rem; text-transform:uppercase;">
+      {{ page.descripcion }}
+    </p>
+
+    {{ content }}
+
+    {% if page.subtemas %}
+    <div style="margin-top:3rem;">
+      <p style="font-size:0.75rem; color:#c8d69b; letter-spacing:0.14em; text-transform:uppercase; font-weight:600; padding-bottom:0.8rem; border-bottom:1px solid #f6e6a5; margin-bottom:1.5rem;">
+        Prácticas de este tema
+      </p>
+
+      {% for subtema in page.subtemas %}
+      <div class="post-card">
+        <div class="meta">{{ subtema.numero }}</div>
+        <h2><a href="{{ subtema.url }}">{{ subtema.titulo }}</a></h2>
+        <p>{{ subtema.descripcion }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</main>
