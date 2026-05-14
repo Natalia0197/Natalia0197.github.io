@@ -2,3 +2,15 @@ title: Portafolio de Sistemas Operativos
 description: Prácticas del curso de Sistemas Operativos - UTM
 author: Natalia
 lang: es
+
+collections:
+  temas:
+    output: true
+    permalink: /temas/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: temas
+    values:
+      layout: tema
