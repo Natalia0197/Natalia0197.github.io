@@ -9,22 +9,20 @@ layout: default
   <span class="badge">⚙️ Procesos</span>
   <span class="badge">🔗 IPC</span>
   <span class="badge">🧵 Hilos</span>
+  <span class="badge">💾 Memoria</span>
+  <span class="badge">📁 Archivos</span>
+  <span class="badge">📡 Señales</span>
 </div>
 
 <main>
-  <h2 class="section-title">📚 Prácticas publicadas</h2>
+  <h2 class="section-title">Temas del curso</h2>
 
-  {% for post in site.posts %}
+  {% assign temas_ordenados = site.temas | sort: "orden" %}
+  {% for tema in temas_ordenados %}
   <div class="post-card">
-    <div class="meta">{{ post.date | date: "%d %B %Y" }}</div>
-    <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
-    <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
-  </div>
-  {% else %}
-  <div class="post-card">
-    <p style="color:#607d8b; text-align:center;">
-      Las prácticas aparecerán aquí conforme las vayas publicando.
-    </p>
+    <div class="meta">Tema {{ tema.orden }}</div>
+    <h2><a href="{{ tema.url }}">{{ tema.title }}</a></h2>
+    <p>{{ tema.descripcion }}</p>
   </div>
   {% endfor %}
 </main>
