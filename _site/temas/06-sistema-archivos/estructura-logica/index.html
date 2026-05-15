@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>6.2 Estructura Logica del Sistema de Archivos | Portafolio SO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fbfcee;
+      color: #343b1b;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #343b1b;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fbfcee;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: #c8d69b;
+      text-decoration: none;
+      margin-left: 2rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #fbfcee; }
+
+    .hero {
+      background: #343b1b;
+      border-bottom: 3px solid #c8d69b;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      color: #fbfcee;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span { color: #c8d69b; }
+
+    .hero p {
+      color: #a8b890;
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.8;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #f6e6a5;
+      color: #f6e6a5;
+      padding: 0.25rem 0.9rem;
+      border-radius: 2px;
+      font-size: 0.75rem;
+      margin: 0.2rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      color: #c8d69b;
+      margin-bottom: 2rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-card {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 1.8rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .post-card:hover {
+      border-color: #c8d69b;
+      transform: translateY(-1px);
+    }
+
+    .post-card h2 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-card h2 a {
+      color: #343b1b;
+      text-decoration: none;
+    }
+
+    .post-card h2 a:hover { color: #343b1b; text-decoration: underline; }
+
+    .post-card .meta {
+      color: #a8b890;
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .post-card p { color: #6b7560; font-size: 0.9rem; line-height: 1.7; }
+
+    .post-content {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 3rem;
+      line-height: 1.9;
+    }
+
+    .post-content h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-content h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #c8d69b;
+      margin: 2rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-content h3 {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .post-content p {
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .post-content a {
+      color: #343b1b;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-content a:hover { color: #6b7560; }
+
+    .post-content code {
+      background: #f6e6a5;
+      color: #343b1b;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.86rem;
+      font-weight: 500;
+    }
+
+    .post-content pre {
+      background: #343b1b;
+      border-radius: 4px;
+      border-left: 3px solid #c8d69b;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin: 1.2rem 0;
+    }
+
+    .post-content pre code {
+      background: none;
+      color: #c8d69b;
+      font-size: 0.86rem;
+      font-weight: 400;
+    }
+
+    .post-content img {
+      max-width: 100%;
+      border-radius: 4px;
+      border: 1px solid #f6e6a5;
+      margin: 1.5rem 0;
+    }
+
+    .post-content ul, .post-content ol {
+      padding-left: 1.5rem;
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      color: #a8b890;
+      font-size: 0.78rem;
+      border-top: 1px solid #f6e6a5;
+      margin-top: 5rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">Portafolio · Sistemas Operativos</a>
+    <nav>
+      <a href="/">Inicio</a>
+    </nav>
+  </header>
+
+  <main>
+  <div class="post-content">
+    <div style="margin-bottom:1.5rem;">
+      
+      <a href="/temas/06-sistema-archivos/" style="color:#343b1b; text-decoration:underline; font-size:0.85rem; letter-spacing:0.04em;">
+        ← Volver a 6. Sistema de Archivos
+      </a>
+      
+    </div>
+
+    <h1 style="font-size:1.7rem; font-weight:600; color:#343b1b; margin-bottom:0.3rem;">
+      6.2 Estructura Logica del Sistema de Archivos
+    </h1>
+    <p style="color:#a8b890; font-size:0.8rem; letter-spacing:0.05em; margin-bottom:2.5rem; text-transform:uppercase;">
+      6. Sistema de Archivos
+    </p>
+
+    <h2 id="qué-aprendí">¿Qué aprendí?</h2>
+
+<p>El sistema de archivos, visto de forma lógica, se divide en <strong>4 secciones principales</strong>:</p>
+
+<ol>
+  <li>
+    <p><strong>Boot</strong>: Ubicado en el primer sector, contiene el código de arranque que busca el sistema operativo y lo carga en memoria para inicializarlo.</p>
+  </li>
+  <li>
+    <p><strong>Superbloque</strong>: Describe el estado del sistema de archivos — tamaño total, cantidad de archivos, espacio libre, etc.</p>
+  </li>
+  <li>
+    <p><strong>Lista de nodos índice (inodos)</strong>: Una entrada por cada archivo. Guarda su descripción, situación, propietario, permisos, etc.</p>
+  </li>
+  <li>
+    <p><strong>Bloque de datos</strong>: Contiene el contenido real de los archivos referenciados por los inodos.</p>
+  </li>
+</ol>
+
+<p>También aprendí a usar la función <code class="language-plaintext highlighter-rouge">statvfs()</code> en C para consultar estadísticas del sistema de archivos montado. La estructura <code class="language-plaintext highlighter-rouge">statvfs</code> expone campos como el tamaño de bloque (<code class="language-plaintext highlighter-rouge">f_bsize</code>), número de inodos disponibles (<code class="language-plaintext highlighter-rouge">f_favail</code>), y banderas de montaje (<code class="language-plaintext highlighter-rouge">f_flag</code>).</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/statvfs.h&gt;</span><span class="cp">
+</span><span class="k">struct</span> <span class="n">statvfs</span> <span class="n">vfs</span><span class="p">;</span>
+<span class="n">statvfs</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">vfs</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"Tamaño de bloque: %ld</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span> <span class="n">vfs</span><span class="p">.</span><span class="n">f_bsize</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"Bloques libres: %lu</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span> <span class="n">vfs</span><span class="p">.</span><span class="n">f_bfree</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="cómo-podría-mejorar-esta-práctica">¿Cómo podría mejorar esta práctica?</h2>
+
+<p>Implementar el programa completo con <code class="language-plaintext highlighter-rouge">statvfs()</code> y mostrar todas las estadísticas del sistema de archivos en una salida formateada. También se podría explorar la diferencia entre <code class="language-plaintext highlighter-rouge">statvfs()</code> (estándar POSIX) y <code class="language-plaintext highlighter-rouge">statfs()</code> (solo Linux).</p>
+
+<h2 id="salida-en-pantalla">Salida en pantalla</h2>
+
+<p>Ejemplo de salida del programa con <code class="language-plaintext highlighter-rouge">statvfs()</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Archivo: /
+Tamaño de bloques: 4096
+Tamaño de fragmento: 4096
+Bloques libres: 1204582
+Bloques Disponibles: 1141073
+Número de Inodos: 3932160
+Número de Inodos Libres: 3721044
+</code></pre></div></div>
+
+  </div>
+</main>
+
+
+  <footer>
+    Instituto de Computación, Sistemas Operativos, UTM · 2026
+  </footer>
+</body>
+</html>

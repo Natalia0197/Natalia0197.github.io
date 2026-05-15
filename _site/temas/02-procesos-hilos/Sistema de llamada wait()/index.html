@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2.5 Sistema de llamada wait() | Portafolio SO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fbfcee;
+      color: #343b1b;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #343b1b;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fbfcee;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: #c8d69b;
+      text-decoration: none;
+      margin-left: 2rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #fbfcee; }
+
+    .hero {
+      background: #343b1b;
+      border-bottom: 3px solid #c8d69b;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      color: #fbfcee;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span { color: #c8d69b; }
+
+    .hero p {
+      color: #a8b890;
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.8;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #f6e6a5;
+      color: #f6e6a5;
+      padding: 0.25rem 0.9rem;
+      border-radius: 2px;
+      font-size: 0.75rem;
+      margin: 0.2rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      color: #c8d69b;
+      margin-bottom: 2rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-card {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 1.8rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .post-card:hover {
+      border-color: #c8d69b;
+      transform: translateY(-1px);
+    }
+
+    .post-card h2 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-card h2 a {
+      color: #343b1b;
+      text-decoration: none;
+    }
+
+    .post-card h2 a:hover { color: #343b1b; text-decoration: underline; }
+
+    .post-card .meta {
+      color: #a8b890;
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .post-card p { color: #6b7560; font-size: 0.9rem; line-height: 1.7; }
+
+    .post-content {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 3rem;
+      line-height: 1.9;
+    }
+
+    .post-content h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-content h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #c8d69b;
+      margin: 2rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-content h3 {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .post-content p {
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .post-content a {
+      color: #343b1b;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-content a:hover { color: #6b7560; }
+
+    .post-content code {
+      background: #f6e6a5;
+      color: #343b1b;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.86rem;
+      font-weight: 500;
+    }
+
+    .post-content pre {
+      background: #343b1b;
+      border-radius: 4px;
+      border-left: 3px solid #c8d69b;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin: 1.2rem 0;
+    }
+
+    .post-content pre code {
+      background: none;
+      color: #c8d69b;
+      font-size: 0.86rem;
+      font-weight: 400;
+    }
+
+    .post-content img {
+      max-width: 100%;
+      border-radius: 4px;
+      border: 1px solid #f6e6a5;
+      margin: 1.5rem 0;
+    }
+
+    .post-content ul, .post-content ol {
+      padding-left: 1.5rem;
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      color: #a8b890;
+      font-size: 0.78rem;
+      border-top: 1px solid #f6e6a5;
+      margin-top: 5rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">Portafolio · Sistemas Operativos</a>
+    <nav>
+      <a href="/">Inicio</a>
+    </nav>
+  </header>
+
+  <main>
+  <div class="post-content">
+    <div style="margin-bottom:1.5rem;">
+      
+      <a href="/temas/02-procesos-hilos/" style="color:#343b1b; text-decoration:underline; font-size:0.85rem; letter-spacing:0.04em;">
+        ← Volver a 2. Procesos e Hilos
+      </a>
+      
+    </div>
+
+    <h1 style="font-size:1.7rem; font-weight:600; color:#343b1b; margin-bottom:0.3rem;">
+      2.5 Sistema de llamada wait()
+    </h1>
+    <p style="color:#a8b890; font-size:0.8rem; letter-spacing:0.05em; margin-bottom:2.5rem; text-transform:uppercase;">
+      2. Procesos e Hilos
+    </p>
+
+    <p>La llamada al sistema <code class="language-plaintext highlighter-rouge">wait()</code> permite que un proceso padre se suspenda hasta que uno de sus procesos hijo termina su ejecución. Su prototipo es el siguiente:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+</span><span class="n">pid_t</span> <span class="nf">wait</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">stat_loc</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Si <code class="language-plaintext highlighter-rouge">wait()</code> retorna debido a la terminación de un hijo:</p>
+
+<ul>
+  <li>El valor de retorno es positivo y corresponde al PID del proceso hijo.</li>
+  <li>En caso de error, retorna <code class="language-plaintext highlighter-rouge">-1</code> y se establece un valor apropiado en la variable global <code class="language-plaintext highlighter-rouge">errno</code>.</li>
+</ul>
+
+<p>Algunos valores relevantes de <code class="language-plaintext highlighter-rouge">errno</code> son:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">ECHILD</code>: el proceso no tiene hijos a los cuales esperar.</li>
+  <li><code class="language-plaintext highlighter-rouge">EINTR</code>: la llamada fue interrumpida por la recepción de una señal.</li>
+</ul>
+
+<h2 id="análisis-del-estado-de-terminación">Análisis del estado de terminación</h2>
+
+<p>El parámetro <code class="language-plaintext highlighter-rouge">stat_loc</code> es un apuntador a una variable entera donde el kernel almacena información sobre el estado de terminación del proceso hijo. Este valor debe analizarse utilizando los macros definidos en <code class="language-plaintext highlighter-rouge">&lt;sys/wait.h&gt;</code>:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">WIFEXITED(*stat_loc)</code>: evalúa a verdadero si el proceso hijo terminó de forma normal.</li>
+  <li><code class="language-plaintext highlighter-rouge">WEXITSTATUS(*stat_loc)</code>: si el hijo terminó normalmente, obtiene los 8 bits menos significativos del valor pasado a <code class="language-plaintext highlighter-rouge">exit()</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">WIFSIGNALED(*stat_loc)</code>: evalúa a verdadero si el proceso hijo terminó debido a una señal no capturada.</li>
+  <li><code class="language-plaintext highlighter-rouge">WTERMSIG(*stat_loc)</code>: si el proceso hijo terminó por una señal, obtiene el número de dicha señal.</li>
+</ul>
+
+<h2 id="ejemplo">Ejemplo</h2>
+
+<p>Programa que muestra el empleo de la llamada al sistema <code class="language-plaintext highlighter-rouge">wait()</code>:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">pid_t</span> <span class="n">hijo</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">estado</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">hijo</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"fallo el fork"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">hijo</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"soy el hijo con pid = %ld</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">getpid</span><span class="p">());</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">estado</span><span class="p">)</span> <span class="o">!=</span> <span class="n">hijo</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"una señal debio interrumpir la espera</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"soy el padre con pid = %ld e hijo con pid = %ld</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+                <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">getpid</span><span class="p">(),</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">hijo</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_SUCCESS</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="qué-aprendí">¿Qué aprendí?</h2>
+
+<p>Aprendí que <code class="language-plaintext highlighter-rouge">wait()</code> es fundamental para la sincronización entre procesos padre e hijo. Sin esta llamada, los procesos hijos que terminan antes que el padre quedan en estado zombi, ocupando una entrada en la tabla de procesos. El uso correcto de <code class="language-plaintext highlighter-rouge">wait()</code> permite recuperar el código de terminación del hijo y liberar completamente sus recursos del sistema.</p>
+
+<h2 id="cómo-podría-mejorar-esta-práctica">¿Cómo podría mejorar esta práctica?</h2>
+
+<p>Podría combinar <code class="language-plaintext highlighter-rouge">wait()</code> con el análisis de los macros <code class="language-plaintext highlighter-rouge">WIFEXITED</code> y <code class="language-plaintext highlighter-rouge">WEXITSTATUS</code> para obtener e imprimir el código de salida del proceso hijo, lo que permitiría un control más detallado del resultado de la ejecución.</p>
+
+<h2 id="salida-en-pantalla">Salida en pantalla</h2>
+
+<p><img src="/assets/wait.png" alt="wait" />
+<em>Ejemplo 1</em></p>
+
+  </div>
+</main>
+
+
+  <footer>
+    Instituto de Computación, Sistemas Operativos, UTM · 2026
+  </footer>
+</body>
+</html>

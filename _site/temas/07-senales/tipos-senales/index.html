@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7.2 Tipos de Senales | Portafolio SO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fbfcee;
+      color: #343b1b;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #343b1b;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fbfcee;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: #c8d69b;
+      text-decoration: none;
+      margin-left: 2rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #fbfcee; }
+
+    .hero {
+      background: #343b1b;
+      border-bottom: 3px solid #c8d69b;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      color: #fbfcee;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span { color: #c8d69b; }
+
+    .hero p {
+      color: #a8b890;
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.8;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #f6e6a5;
+      color: #f6e6a5;
+      padding: 0.25rem 0.9rem;
+      border-radius: 2px;
+      font-size: 0.75rem;
+      margin: 0.2rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      color: #c8d69b;
+      margin-bottom: 2rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-card {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 1.8rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .post-card:hover {
+      border-color: #c8d69b;
+      transform: translateY(-1px);
+    }
+
+    .post-card h2 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-card h2 a {
+      color: #343b1b;
+      text-decoration: none;
+    }
+
+    .post-card h2 a:hover { color: #343b1b; text-decoration: underline; }
+
+    .post-card .meta {
+      color: #a8b890;
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .post-card p { color: #6b7560; font-size: 0.9rem; line-height: 1.7; }
+
+    .post-content {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 3rem;
+      line-height: 1.9;
+    }
+
+    .post-content h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-content h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #c8d69b;
+      margin: 2rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-content h3 {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .post-content p {
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .post-content a {
+      color: #343b1b;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-content a:hover { color: #6b7560; }
+
+    .post-content code {
+      background: #f6e6a5;
+      color: #343b1b;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.86rem;
+      font-weight: 500;
+    }
+
+    .post-content pre {
+      background: #343b1b;
+      border-radius: 4px;
+      border-left: 3px solid #c8d69b;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin: 1.2rem 0;
+    }
+
+    .post-content pre code {
+      background: none;
+      color: #c8d69b;
+      font-size: 0.86rem;
+      font-weight: 400;
+    }
+
+    .post-content img {
+      max-width: 100%;
+      border-radius: 4px;
+      border: 1px solid #f6e6a5;
+      margin: 1.5rem 0;
+    }
+
+    .post-content ul, .post-content ol {
+      padding-left: 1.5rem;
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      color: #a8b890;
+      font-size: 0.78rem;
+      border-top: 1px solid #f6e6a5;
+      margin-top: 5rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">Portafolio · Sistemas Operativos</a>
+    <nav>
+      <a href="/">Inicio</a>
+    </nav>
+  </header>
+
+  <main>
+  <div class="post-content">
+    <div style="margin-bottom:1.5rem;">
+      
+      <a href="/temas/07-senales/" style="color:#343b1b; text-decoration:underline; font-size:0.85rem; letter-spacing:0.04em;">
+        ← Volver a 7. Señales
+      </a>
+      
+    </div>
+
+    <h1 style="font-size:1.7rem; font-weight:600; color:#343b1b; margin-bottom:0.3rem;">
+      7.2 Tipos de Senales
+    </h1>
+    <p style="color:#a8b890; font-size:0.8rem; letter-spacing:0.05em; margin-bottom:2.5rem; text-transform:uppercase;">
+      7. Señales
+    </p>
+
+    <h2 id="qué-aprendí">¿Qué aprendí?</h2>
+
+<p>Cada señal tiene un número entero positivo y un nombre (definido en <code class="language-plaintext highlighter-rouge">&lt;signal.h&gt;</code>). Las señales se clasifican en los siguientes grupos:</p>
+
+<ul>
+  <li><strong>Relacionadas con terminación de procesos</strong>: notifican el fin de un proceso hijo o solicitan terminar.</li>
+  <li><strong>Excepciones de proceso</strong>: acceso fuera del espacio de direcciones, errores en coma flotante, etc.</li>
+  <li><strong>Errores irrecuperables de llamadas al sistema</strong>: ocurren dentro de llamadas al sistema fallidas.</li>
+  <li><strong>Originadas en modo usuario</strong>: enviadas explícitamente entre procesos vía <code class="language-plaintext highlighter-rouge">kill()</code>, o por temporizadores.</li>
+  <li><strong>Interacción con la terminal</strong>: generadas al presionar combinaciones de teclas como Ctrl+C o Ctrl+Z.</li>
+  <li><strong>Ejecución paso a paso</strong>: usadas por depuradores.</li>
+</ul>
+
+<p>Las principales señales definidas en UNIX System V son:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Núm</th>
+      <th>Descripción</th>
+      <th>Acción por defecto</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SIGHUP</td>
+      <td>1</td>
+      <td>Terminal desconectada o líder del grupo terminó</td>
+      <td>Terminar</td>
+    </tr>
+    <tr>
+      <td>SIGINT</td>
+      <td>2</td>
+      <td>Tecla de interrupción (Ctrl+C)</td>
+      <td>Terminar</td>
+    </tr>
+    <tr>
+      <td>SIGQUIT</td>
+      <td>3</td>
+      <td>Tecla de salida (Ctrl+\)</td>
+      <td>Core + Terminar</td>
+    </tr>
+    <tr>
+      <td>SIGILL</td>
+      <td>4</td>
+      <td>Instrucción ilegal detectada por hardware</td>
+      <td>Core + Terminar</td>
+    </tr>
+    <tr>
+      <td>SIGFPE</td>
+      <td>8</td>
+      <td>Error en operación de coma flotante</td>
+      <td>Core + Terminar</td>
+    </tr>
+    <tr>
+      <td>SIGKILL</td>
+      <td>9</td>
+      <td>Terminación irremediable del proceso</td>
+      <td>Terminar (no ignorable)</td>
+    </tr>
+    <tr>
+      <td>SIGSEGV</td>
+      <td>11</td>
+      <td>Violación de segmento de memoria</td>
+      <td>Core + Terminar</td>
+    </tr>
+    <tr>
+      <td>SIGPIPE</td>
+      <td>13</td>
+      <td>Escritura en tubería sin lectores</td>
+      <td>Terminar</td>
+    </tr>
+    <tr>
+      <td>SIGALRM</td>
+      <td>14</td>
+      <td>Temporizador expirado (alarm)</td>
+      <td>Terminar</td>
+    </tr>
+    <tr>
+      <td>SIGTERM</td>
+      <td>15</td>
+      <td>Finalización de software (puede ignorarse)</td>
+      <td>Terminar</td>
+    </tr>
+    <tr>
+      <td>SIGUSR1</td>
+      <td>16</td>
+      <td>Señal reservada para el programador</td>
+      <td>Terminar</td>
+    </tr>
+    <tr>
+      <td>SIGUSR2</td>
+      <td>17</td>
+      <td>Señal reservada para el programador</td>
+      <td>Terminar</td>
+    </tr>
+    <tr>
+      <td>SIGCLD</td>
+      <td>18</td>
+      <td>Muerte de proceso hijo</td>
+      <td>Ignorar</td>
+    </tr>
+  </tbody>
+</table>
+
+  </div>
+</main>
+
+
+  <footer>
+    Instituto de Computación, Sistemas Operativos, UTM · 2026
+  </footer>
+</body>
+</html>

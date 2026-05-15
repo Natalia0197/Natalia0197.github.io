@@ -6,11 +6,41 @@ lang: es
 collections:
   temas:
     output: true
-    permalink: /temas/:name/
+    permalink: /temas/:path/
 
 defaults:
   - scope:
-      path: ""
+      path: "_temas"
+      type: temas
+    values:
+      layout: post
+  - scope:
+      path: "_temas/01-introduccion-linux/index.md"
+      type: temas
+    values:
+      layout: tema
+  - scope:
+      path: "_temas/02-procesos-hilos/index.md"
+      type: temas
+    values:
+      layout: tema
+  - scope:
+      path: "_temas/03-ipc/index.md"
+      type: temas
+    values:
+      layout: tema
+  - scope:
+      path: "_temas/05-administracion-memoria/index.md"
+      type: temas
+    values:
+      layout: tema
+  - scope:
+      path: "_temas/06-sistema-archivos/index.md"
+      type: temas
+    values:
+      layout: tema
+  - scope:
+      path: "_temas/07-senales/index.md"
       type: temas
     values:
       layout: tema

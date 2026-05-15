@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2.4 Sistema de llamado para identificar procesos | Portafolio SO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fbfcee;
+      color: #343b1b;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #343b1b;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fbfcee;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: #c8d69b;
+      text-decoration: none;
+      margin-left: 2rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #fbfcee; }
+
+    .hero {
+      background: #343b1b;
+      border-bottom: 3px solid #c8d69b;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      color: #fbfcee;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span { color: #c8d69b; }
+
+    .hero p {
+      color: #a8b890;
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.8;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #f6e6a5;
+      color: #f6e6a5;
+      padding: 0.25rem 0.9rem;
+      border-radius: 2px;
+      font-size: 0.75rem;
+      margin: 0.2rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      color: #c8d69b;
+      margin-bottom: 2rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-card {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 1.8rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .post-card:hover {
+      border-color: #c8d69b;
+      transform: translateY(-1px);
+    }
+
+    .post-card h2 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-card h2 a {
+      color: #343b1b;
+      text-decoration: none;
+    }
+
+    .post-card h2 a:hover { color: #343b1b; text-decoration: underline; }
+
+    .post-card .meta {
+      color: #a8b890;
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .post-card p { color: #6b7560; font-size: 0.9rem; line-height: 1.7; }
+
+    .post-content {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 3rem;
+      line-height: 1.9;
+    }
+
+    .post-content h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-content h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #c8d69b;
+      margin: 2rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-content h3 {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .post-content p {
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .post-content a {
+      color: #343b1b;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-content a:hover { color: #6b7560; }
+
+    .post-content code {
+      background: #f6e6a5;
+      color: #343b1b;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.86rem;
+      font-weight: 500;
+    }
+
+    .post-content pre {
+      background: #343b1b;
+      border-radius: 4px;
+      border-left: 3px solid #c8d69b;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin: 1.2rem 0;
+    }
+
+    .post-content pre code {
+      background: none;
+      color: #c8d69b;
+      font-size: 0.86rem;
+      font-weight: 400;
+    }
+
+    .post-content img {
+      max-width: 100%;
+      border-radius: 4px;
+      border: 1px solid #f6e6a5;
+      margin: 1.5rem 0;
+    }
+
+    .post-content ul, .post-content ol {
+      padding-left: 1.5rem;
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      color: #a8b890;
+      font-size: 0.78rem;
+      border-top: 1px solid #f6e6a5;
+      margin-top: 5rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">Portafolio · Sistemas Operativos</a>
+    <nav>
+      <a href="/">Inicio</a>
+    </nav>
+  </header>
+
+  <main>
+  <div class="post-content">
+    <div style="margin-bottom:1.5rem;">
+      
+      <a href="/temas/02-procesos-hilos/" style="color:#343b1b; text-decoration:underline; font-size:0.85rem; letter-spacing:0.04em;">
+        ← Volver a 2. Procesos e Hilos
+      </a>
+      
+    </div>
+
+    <h1 style="font-size:1.7rem; font-weight:600; color:#343b1b; margin-bottom:0.3rem;">
+      2.4 Sistema de llamado para identificar procesos
+    </h1>
+    <p style="color:#a8b890; font-size:0.8rem; letter-spacing:0.05em; margin-bottom:2.5rem; text-transform:uppercase;">
+      2. Procesos e Hilos
+    </p>
+
+    <p>Todo proceso en un sistema operativo tipo UNIX tiene asociado un identificador único denominado <strong>PID</strong> (Process Identifier), el cual es un número entero positivo asignado por el kernel. Asimismo, cada proceso mantiene una referencia al proceso que lo creó, conocido como proceso padre, cuyo identificador se denomina <strong>PPID</strong> (Parent Process Identifier).</p>
+
+<p>Para obtener estos valores, el sistema proporciona las siguientes llamadas:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="n">pid_t</span> <span class="nf">getpid</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>   <span class="cm">/* Retorna el PID del proceso actual */</span>
+<span class="n">pid_t</span> <span class="nf">getppid</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>  <span class="cm">/* Retorna el PID del proceso padre */</span>
+</code></pre></div></div>
+
+<p>El tipo <code class="language-plaintext highlighter-rouge">pid_t</code> representa el identificador de un proceso. En la biblioteca GNU C es un tipo entero con signo cuyo tamaño depende de la arquitectura del sistema.</p>
+
+<h2 id="grupos-de-procesos">Grupos de procesos</h2>
+
+<p>Además de la relación padre–hijo, los procesos pueden organizarse en <strong>grupos de procesos</strong>, los cuales permiten al sistema operativo gestionar de forma conjunta conjuntos de procesos relacionados, por ejemplo, los asociados a una misma sesión o terminal.</p>
+
+<p>Para identificar el grupo al que pertenece un proceso:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="n">pid_t</span> <span class="nf">getpgrp</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>  <span class="cm">/* Retorna el PGID del proceso actual */</span>
+<span class="n">pid_t</span> <span class="nf">setpgrp</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>  <span class="cm">/* Establece el proceso como líder de un nuevo grupo */</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">setpgrp()</code> establece el PID del proceso como su PGID, convirtiéndolo en líder del grupo. En implementaciones modernas, esta operación suele estar respaldada por <code class="language-plaintext highlighter-rouge">setpgid()</code>.</p>
+
+<h2 id="procesos-huérfanos">Procesos huérfanos</h2>
+
+<p>Si un proceso padre termina su ejecución antes que sus procesos hijos, estos no quedan sin control. El kernel reasigna automáticamente a los procesos huérfanos al proceso con PID 1, que históricamente fue <code class="language-plaintext highlighter-rouge">init</code> y en sistemas GNU/Linux modernos suele corresponder a <code class="language-plaintext highlighter-rouge">systemd</code>. Este proceso se encarga de adoptar a los hijos y recoger su estado de terminación.</p>
+
+<h2 id="descriptores-de-archivo-estándar">Descriptores de archivo estándar</h2>
+
+<p>El uso de <code class="language-plaintext highlighter-rouge">stdout</code> pone de manifiesto una convención fundamental en UNIX: a cada proceso se le asocian por defecto tres descriptores de archivo estándar:</p>
+
+<ul>
+  <li><strong>Entrada estándar</strong> (<code class="language-plaintext highlighter-rouge">stdin</code>): descriptor 0, asociado típicamente al teclado.</li>
+  <li><strong>Salida estándar</strong> (<code class="language-plaintext highlighter-rouge">stdout</code>): descriptor 1, asociado normalmente a la pantalla.</li>
+  <li><strong>Error estándar</strong> (<code class="language-plaintext highlighter-rouge">stderr</code>): descriptor 2, asociado también a la pantalla, pero separado de la salida estándar.</li>
+</ul>
+
+<p>Estas constantes están definidas en <code class="language-plaintext highlighter-rouge">&lt;unistd.h&gt;</code> como <code class="language-plaintext highlighter-rouge">STDIN_FILENO</code>, <code class="language-plaintext highlighter-rouge">STDOUT_FILENO</code> y <code class="language-plaintext highlighter-rouge">STDERR_FILENO</code>. Cuando se ejecuta <code class="language-plaintext highlighter-rouge">fork()</code>, el proceso hijo hereda los descriptores abiertos del padre, por lo que ambos pueden imprimir en la terminal sin necesidad de abrir explícitamente un archivo.</p>
+
+<h2 id="ejemplo-1-imprimir-pid-del-padre-y-del-hijo">Ejemplo 1: imprimir PID del padre y del hijo</h2>
+
+<p>Tras la ejecución de <code class="language-plaintext highlighter-rouge">fork()</code>, tanto el padre como el hijo imprimen sus respectivos identificadores:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">pid_t</span> <span class="n">hijo</span><span class="p">;</span>
+    <span class="n">hijo</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">hijo</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Código ejecutado por el proceso hijo */</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">"Soy el hijo, PID=%ld</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">getpid</span><span class="p">());</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">hijo</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Código ejecutado por el proceso padre */</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">"Soy el padre, PID=%ld</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">getpid</span><span class="p">());</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="cm">/* Error al crear el proceso */</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"fork"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">EXIT_FAILURE</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="ejemplo-2-cadena-lineal-de-procesos">Ejemplo 2: cadena lineal de procesos</h2>
+
+<p>En una cadena de procesos, cada proceso crea un solo hijo y el padre deja de crear nuevos procesos. El resultado es una estructura lineal: P0 → P1 → P2 → P3 → … → Pn</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">pid_t</span> <span class="n">hijo</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">hijo</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">hijo</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="cm">/* El padre deja de crear más procesos */</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"Proceso PID=%ld, PPID=%ld</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+                <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">getpid</span><span class="p">(),</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">getppid</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>En cada iteración, solo el proceso hijo continúa el ciclo. El padre sale con <code class="language-plaintext highlighter-rouge">break</code>, generando una cadena lineal donde cada proceso tiene exactamente un hijo, excepto el último.</p>
+
+<h2 id="ejemplo-3-abanico-de-procesos">Ejemplo 3: abanico de procesos</h2>
+
+<p>En un abanico de procesos, un único proceso padre crea varios hijos,
+pero los hijos no crean más procesos:</p>
+
+<p><img src="/assets/image_copy.png" alt="forkaba" /></p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+ <span class="n">pid_t</span> <span class="n">hijo</span><span class="p">;</span>
+ <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+ <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+ <span class="n">hijo</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+ <span class="k">if</span> <span class="p">(</span><span class="n">hijo</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+ <span class="cm">/* El hijo no crea más procesos */</span>
+ <span class="k">break</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="p">}</span>
+ <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"Proceso PID=%ld, PPID=%ld</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">getpid</span><span class="p">(),</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">getppid</span><span class="p">());</span>
+ <span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Solo el proceso padre ejecuta el ciclo completo. Cada iteración crea un <code class="language-plaintext highlighter-rouge">hijo</code> nuevo. Cada hijo ejecuta el <code class="language-plaintext highlighter-rouge">break</code> y no genera más procesos. Se obtiene una estructura tipo estrella (abanico).</p>
+<h2 id="qué-aprendí">¿Qué aprendí?</h2>
+
+<p>Aprendí que <code class="language-plaintext highlighter-rouge">getpid()</code> y <code class="language-plaintext highlighter-rouge">getppid()</code> son herramientas esenciales para trazar la jerarquía de procesos en un programa. Combinadas con <code class="language-plaintext highlighter-rouge">fork()</code>, permiten verificar en tiempo de ejecución qué proceso está ejecutando cada rama del código. También entendí la importancia de los grupos de procesos y cómo el sistema gestiona automáticamente a los procesos huérfanos mediante <code class="language-plaintext highlighter-rouge">init</code>/<code class="language-plaintext highlighter-rouge">systemd</code>.</p>
+
+<h2 id="cómo-podría-mejorar-esta-práctica">¿Cómo podría mejorar esta práctica?</h2>
+
+<p>Podría extender el ejemplo de la cadena lineal para crear en su lugar un árbol de procesos, donde cada padre crea dos hijos en lugar de uno, y verificar la estructura resultante con <code class="language-plaintext highlighter-rouge">ps --forest</code> para visualizar la jerarquía completa.</p>
+
+<h2 id="salida-en-pantalla">Salida en pantalla</h2>
+<p><img src="/assets/fork2.png" alt="fork2" />
+<em>Ejemplo1.</em></p>
+
+<p><img src="/assets/fork3.png" alt="fork3" />
+<em>Ejemplo2.</em></p>
+
+<p><img src="/assets/fork4.png" alt="fork4" />
+<em>Ejemplo3.</em></p>
+
+  </div>
+</main>
+
+
+  <footer>
+    Instituto de Computación, Sistemas Operativos, UTM · 2026
+  </footer>
+</body>
+</html>

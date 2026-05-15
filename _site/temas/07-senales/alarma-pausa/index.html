@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7.4 Funcion Alarma y Pausa | Portafolio SO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fbfcee;
+      color: #343b1b;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #343b1b;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fbfcee;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: #c8d69b;
+      text-decoration: none;
+      margin-left: 2rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #fbfcee; }
+
+    .hero {
+      background: #343b1b;
+      border-bottom: 3px solid #c8d69b;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      color: #fbfcee;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span { color: #c8d69b; }
+
+    .hero p {
+      color: #a8b890;
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.8;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #f6e6a5;
+      color: #f6e6a5;
+      padding: 0.25rem 0.9rem;
+      border-radius: 2px;
+      font-size: 0.75rem;
+      margin: 0.2rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      color: #c8d69b;
+      margin-bottom: 2rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-card {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 1.8rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .post-card:hover {
+      border-color: #c8d69b;
+      transform: translateY(-1px);
+    }
+
+    .post-card h2 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-card h2 a {
+      color: #343b1b;
+      text-decoration: none;
+    }
+
+    .post-card h2 a:hover { color: #343b1b; text-decoration: underline; }
+
+    .post-card .meta {
+      color: #a8b890;
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .post-card p { color: #6b7560; font-size: 0.9rem; line-height: 1.7; }
+
+    .post-content {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 3rem;
+      line-height: 1.9;
+    }
+
+    .post-content h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-content h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #c8d69b;
+      margin: 2rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-content h3 {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .post-content p {
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .post-content a {
+      color: #343b1b;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-content a:hover { color: #6b7560; }
+
+    .post-content code {
+      background: #f6e6a5;
+      color: #343b1b;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.86rem;
+      font-weight: 500;
+    }
+
+    .post-content pre {
+      background: #343b1b;
+      border-radius: 4px;
+      border-left: 3px solid #c8d69b;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin: 1.2rem 0;
+    }
+
+    .post-content pre code {
+      background: none;
+      color: #c8d69b;
+      font-size: 0.86rem;
+      font-weight: 400;
+    }
+
+    .post-content img {
+      max-width: 100%;
+      border-radius: 4px;
+      border: 1px solid #f6e6a5;
+      margin: 1.5rem 0;
+    }
+
+    .post-content ul, .post-content ol {
+      padding-left: 1.5rem;
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      color: #a8b890;
+      font-size: 0.78rem;
+      border-top: 1px solid #f6e6a5;
+      margin-top: 5rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">Portafolio · Sistemas Operativos</a>
+    <nav>
+      <a href="/">Inicio</a>
+    </nav>
+  </header>
+
+  <main>
+  <div class="post-content">
+    <div style="margin-bottom:1.5rem;">
+      
+      <a href="/temas/07-senales/" style="color:#343b1b; text-decoration:underline; font-size:0.85rem; letter-spacing:0.04em;">
+        ← Volver a 7. Señales
+      </a>
+      
+    </div>
+
+    <h1 style="font-size:1.7rem; font-weight:600; color:#343b1b; margin-bottom:0.3rem;">
+      7.4 Funcion Alarma y Pausa
+    </h1>
+    <p style="color:#a8b890; font-size:0.8rem; letter-spacing:0.05em; margin-bottom:2.5rem; text-transform:uppercase;">
+      7. Señales
+    </p>
+
+    <h2 id="qué-aprendí">¿Qué aprendí?</h2>
+
+<h3 id="función-alarm">Función <code class="language-plaintext highlighter-rouge">alarm()</code></h3>
+
+<p>Permite configurar un <strong>temporizador descendente</strong>. Cuando el temporizador expira, el kernel envía la señal <code class="language-plaintext highlighter-rouge">SIGALRM</code> al proceso.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="nf">alarm</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">seconds</span><span class="p">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Si <code class="language-plaintext highlighter-rouge">seconds = 0</code>, cancela cualquier alarma pendiente.</li>
+  <li>Solo existe <strong>una alarma activa por proceso</strong>; llamar a <code class="language-plaintext highlighter-rouge">alarm()</code> nuevamente cancela la anterior.</li>
+  <li>Retorna los segundos restantes de la alarma previa (o <code class="language-plaintext highlighter-rouge">0</code> si no había).</li>
+</ul>
+
+<p>La señal <code class="language-plaintext highlighter-rouge">SIGALRM</code> puede capturarse o ignorarse. Si no se captura, su acción por defecto es <strong>terminar el proceso</strong>.</p>
+
+<h3 id="función-pause">Función <code class="language-plaintext highlighter-rouge">pause()</code></h3>
+
+<p>Suspende el proceso hasta que se reciba y capture una señal:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">pause</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Retorna <code class="language-plaintext highlighter-rouge">-1</code> cuando una señal es capturada y <code class="language-plaintext highlighter-rouge">errno</code> se fija en <code class="language-plaintext highlighter-rouge">EINTR</code>.</p>
+
+<p><strong>Ejemplo — detener un contador con SIGALRM:</strong></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="cp">#define SEG 2
+</span><span class="kt">int</span> <span class="n">salir</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">accion</span><span class="p">(</span><span class="kt">int</span> <span class="n">signum</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Recibí señal: %d SIGALRM</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">signum</span><span class="p">);</span>
+    <span class="n">salir</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"En %d segundos recibirás una alarma</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">SEG</span><span class="p">);</span>
+    <span class="n">signal</span><span class="p">(</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="n">accion</span><span class="p">);</span>
+    <span class="n">alarm</span><span class="p">(</span><span class="n">SEG</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">salir</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"contemos: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">i</span><span class="o">++</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>El programa cuenta hasta que el kernel envía <code class="language-plaintext highlighter-rouge">SIGALRM</code> después de 2 segundos, momento en que la función <code class="language-plaintext highlighter-rouge">accion()</code> cambia la bandera y detiene el ciclo.</p>
+
+<h2 id="cómo-podría-mejorar-esta-práctica">¿Cómo podría mejorar esta práctica?</h2>
+
+<p>Combinar <code class="language-plaintext highlighter-rouge">alarm()</code> con <code class="language-plaintext highlighter-rouge">pause()</code> para implementar un temporizador más eficiente (sin desperdiciar CPU en un bucle activo). También explorar <code class="language-plaintext highlighter-rouge">setitimer()</code>, que ofrece mayor precisión que <code class="language-plaintext highlighter-rouge">alarm()</code>.</p>
+
+<h2 id="salida-en-pantalla">Salida en pantalla</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>En 2 segundos recibirás una alarma
+contemos: 0
+contemos: 1
+contemos: 2
+...
+contemos: 48392
+
+Recibí señal: 14 SIGALRM
+</code></pre></div></div>
+
+  </div>
+</main>
+
+
+  <footer>
+    Instituto de Computación, Sistemas Operativos, UTM · 2026
+  </footer>
+</body>
+</html>

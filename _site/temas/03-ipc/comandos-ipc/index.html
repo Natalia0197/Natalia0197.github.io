@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3.5 Información de IPC por Comandos del Sistema | Portafolio SO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fbfcee;
+      color: #343b1b;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #343b1b;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fbfcee;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: #c8d69b;
+      text-decoration: none;
+      margin-left: 2rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #fbfcee; }
+
+    .hero {
+      background: #343b1b;
+      border-bottom: 3px solid #c8d69b;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      color: #fbfcee;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span { color: #c8d69b; }
+
+    .hero p {
+      color: #a8b890;
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.8;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #f6e6a5;
+      color: #f6e6a5;
+      padding: 0.25rem 0.9rem;
+      border-radius: 2px;
+      font-size: 0.75rem;
+      margin: 0.2rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      color: #c8d69b;
+      margin-bottom: 2rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-card {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 1.8rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .post-card:hover {
+      border-color: #c8d69b;
+      transform: translateY(-1px);
+    }
+
+    .post-card h2 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-card h2 a {
+      color: #343b1b;
+      text-decoration: none;
+    }
+
+    .post-card h2 a:hover { color: #343b1b; text-decoration: underline; }
+
+    .post-card .meta {
+      color: #a8b890;
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .post-card p { color: #6b7560; font-size: 0.9rem; line-height: 1.7; }
+
+    .post-content {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 3rem;
+      line-height: 1.9;
+    }
+
+    .post-content h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-content h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #c8d69b;
+      margin: 2rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-content h3 {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .post-content p {
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .post-content a {
+      color: #343b1b;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-content a:hover { color: #6b7560; }
+
+    .post-content code {
+      background: #f6e6a5;
+      color: #343b1b;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.86rem;
+      font-weight: 500;
+    }
+
+    .post-content pre {
+      background: #343b1b;
+      border-radius: 4px;
+      border-left: 3px solid #c8d69b;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin: 1.2rem 0;
+    }
+
+    .post-content pre code {
+      background: none;
+      color: #c8d69b;
+      font-size: 0.86rem;
+      font-weight: 400;
+    }
+
+    .post-content img {
+      max-width: 100%;
+      border-radius: 4px;
+      border: 1px solid #f6e6a5;
+      margin: 1.5rem 0;
+    }
+
+    .post-content ul, .post-content ol {
+      padding-left: 1.5rem;
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      color: #a8b890;
+      font-size: 0.78rem;
+      border-top: 1px solid #f6e6a5;
+      margin-top: 5rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">Portafolio · Sistemas Operativos</a>
+    <nav>
+      <a href="/">Inicio</a>
+    </nav>
+  </header>
+
+  <main>
+  <div class="post-content">
+    <div style="margin-bottom:1.5rem;">
+      
+      <a href="/temas/03-ipc/" style="color:#343b1b; text-decoration:underline; font-size:0.85rem; letter-spacing:0.04em;">
+        ← Volver a 3. IPC
+      </a>
+      
+    </div>
+
+    <h1 style="font-size:1.7rem; font-weight:600; color:#343b1b; margin-bottom:0.3rem;">
+      3.5 Información de IPC por Comandos del Sistema
+    </h1>
+    <p style="color:#a8b890; font-size:0.8rem; letter-spacing:0.05em; margin-bottom:2.5rem; text-transform:uppercase;">
+      3. IPC
+    </p>
+
+    <p>En GNU/Linux se puede obtener información sobre los objetos IPC activos por medio del comando <code class="language-plaintext highlighter-rouge">ipcs</code>. Por defecto muestra información sobre los tres tipos de mecanismos IPC: segmentos de memoria compartida, colas de mensajes y arreglos de semáforos.</p>
+
+<h2 id="comando-ipcs">Comando <code class="language-plaintext highlighter-rouge">ipcs</code></h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ipcs
+</code></pre></div></div>
+
+<p>Ejemplo de salida:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>------ Colas de mensajes -----
+key        msqid      propietario perms      bytes utilizados mensajes
+
+---- Segmentos memoria compartida ----
+key        shmid      propietario perms      bytes      nattch     estado
+0x00000000 884743     usuario     600        1048576    2          dest
+0x00000000 819208     usuario     600        524288     2          dest
+
+------ Matrices semáforo -------
+key        semid      propietario perms      nsems
+0x6100050e 1          usuario     600        2
+0x61000c49 2          usuario     600        2
+</code></pre></div></div>
+
+<h2 id="opciones-útiles-de-ipcs">Opciones útiles de <code class="language-plaintext highlighter-rouge">ipcs</code></h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Opción</th>
+      <th>Descripción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ipcs -m</code></td>
+      <td>Muestra solo segmentos de memoria compartida</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ipcs -q</code></td>
+      <td>Muestra solo colas de mensajes</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ipcs -s</code></td>
+      <td>Muestra solo semáforos</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ipcs -a</code></td>
+      <td>Muestra toda la información disponible</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="comando-ipcrm--eliminar-recursos-ipc">Comando <code class="language-plaintext highlighter-rouge">ipcrm</code> — Eliminar recursos IPC</h2>
+
+<p>Para eliminar un recurso IPC manualmente:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ipcrm <span class="nt">-m</span> &lt;shmid&gt;   <span class="c"># Eliminar segmento de memoria compartida</span>
+ipcrm <span class="nt">-q</span> &lt;msqid&gt;   <span class="c"># Eliminar cola de mensajes</span>
+ipcrm <span class="nt">-s</span> &lt;semid&gt;   <span class="c"># Eliminar semáforo</span>
+</code></pre></div></div>
+
+<h2 id="archivos-en-procsysvipc">Archivos en <code class="language-plaintext highlighter-rouge">/proc/sysvipc</code></h2>
+
+<p>Los objetos IPC también se pueden localizar en el directorio <code class="language-plaintext highlighter-rouge">/proc/sysvipc</code>, donde se ubican tres archivos de lectura:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> /proc/sysvipc
+msg  sem  shm
+</code></pre></div></div>
+
+<p>Por ejemplo, para ver los semáforos activos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> /proc/sysvipc/sem
+key      semid perms  nsems  uid  gid  cuid cgid     otime      ctime
+1627391246  1   600    2    1000 1000 1000 1000  ...
+</code></pre></div></div>
+
+<h2 id="límites-del-sistema">Límites del sistema</h2>
+
+<p>El sistema tiene un límite asociado a cada mecanismo IPC para prevenir la creación arbitraria de recursos. Dichos límites pueden consultarse y modificarse en <code class="language-plaintext highlighter-rouge">/proc/sys/kernel</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /proc/sys/kernel/shmmax    <span class="c"># Tamaño máximo de segmento de memoria compartida</span>
+<span class="nb">cat</span> /proc/sys/kernel/sem       <span class="c"># Límites de semáforos</span>
+<span class="nb">cat</span> /proc/sys/kernel/msgmax    <span class="c"># Tamaño máximo de mensaje en cola</span>
+</code></pre></div></div>
+
+<h2 id="qué-aprendí">¿Qué aprendí?</h2>
+
+<p>Aprendí que <code class="language-plaintext highlighter-rouge">ipcs</code> e <code class="language-plaintext highlighter-rouge">ipcrm</code> son herramientas indispensables para depurar programas que usan IPC, ya que los recursos de System V <strong>persisten en el sistema</strong> después de que el proceso termina si no son eliminados explícitamente con <code class="language-plaintext highlighter-rouge">IPC_RMID</code>. Esto puede causar acumulación de recursos huérfanos que agotan los límites del sistema.</p>
+
+  </div>
+</main>
+
+
+  <footer>
+    Instituto de Computación, Sistemas Operativos, UTM · 2026
+  </footer>
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2.6 Sistema de llamada _exit() y exit() | Portafolio SO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fbfcee;
+      color: #343b1b;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #343b1b;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fbfcee;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: #c8d69b;
+      text-decoration: none;
+      margin-left: 2rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #fbfcee; }
+
+    .hero {
+      background: #343b1b;
+      border-bottom: 3px solid #c8d69b;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      color: #fbfcee;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span { color: #c8d69b; }
+
+    .hero p {
+      color: #a8b890;
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.8;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #f6e6a5;
+      color: #f6e6a5;
+      padding: 0.25rem 0.9rem;
+      border-radius: 2px;
+      font-size: 0.75rem;
+      margin: 0.2rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      color: #c8d69b;
+      margin-bottom: 2rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-card {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 1.8rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .post-card:hover {
+      border-color: #c8d69b;
+      transform: translateY(-1px);
+    }
+
+    .post-card h2 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-card h2 a {
+      color: #343b1b;
+      text-decoration: none;
+    }
+
+    .post-card h2 a:hover { color: #343b1b; text-decoration: underline; }
+
+    .post-card .meta {
+      color: #a8b890;
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .post-card p { color: #6b7560; font-size: 0.9rem; line-height: 1.7; }
+
+    .post-content {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 3rem;
+      line-height: 1.9;
+    }
+
+    .post-content h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-content h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #c8d69b;
+      margin: 2rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-content h3 {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .post-content p {
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .post-content a {
+      color: #343b1b;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-content a:hover { color: #6b7560; }
+
+    .post-content code {
+      background: #f6e6a5;
+      color: #343b1b;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.86rem;
+      font-weight: 500;
+    }
+
+    .post-content pre {
+      background: #343b1b;
+      border-radius: 4px;
+      border-left: 3px solid #c8d69b;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin: 1.2rem 0;
+    }
+
+    .post-content pre code {
+      background: none;
+      color: #c8d69b;
+      font-size: 0.86rem;
+      font-weight: 400;
+    }
+
+    .post-content img {
+      max-width: 100%;
+      border-radius: 4px;
+      border: 1px solid #f6e6a5;
+      margin: 1.5rem 0;
+    }
+
+    .post-content ul, .post-content ol {
+      padding-left: 1.5rem;
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      color: #a8b890;
+      font-size: 0.78rem;
+      border-top: 1px solid #f6e6a5;
+      margin-top: 5rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">Portafolio · Sistemas Operativos</a>
+    <nav>
+      <a href="/">Inicio</a>
+    </nav>
+  </header>
+
+  <main>
+  <div class="post-content">
+    <div style="margin-bottom:1.5rem;">
+      
+      <a href="/temas/02-procesos-hilos/" style="color:#343b1b; text-decoration:underline; font-size:0.85rem; letter-spacing:0.04em;">
+        ← Volver a 2. Procesos e Hilos
+      </a>
+      
+    </div>
+
+    <h1 style="font-size:1.7rem; font-weight:600; color:#343b1b; margin-bottom:0.3rem;">
+      2.6 Sistema de llamada _exit() y exit()
+    </h1>
+    <p style="color:#a8b890; font-size:0.8rem; letter-spacing:0.05em; margin-bottom:2.5rem; text-transform:uppercase;">
+      2. Procesos e Hilos
+    </p>
+
+    <p>Todo proceso debe terminar su ejecución en algún momento, ya sea de forma normal o anormal. Para la terminación normal existen dos llamadas principales: <code class="language-plaintext highlighter-rouge">_exit()</code> y <code class="language-plaintext highlighter-rouge">exit()</code>.</p>
+
+<h2 id="_exit"><code class="language-plaintext highlighter-rouge">_exit()</code></h2>
+
+<p>La llamada al sistema <code class="language-plaintext highlighter-rouge">_exit()</code> termina el proceso de forma inmediata, devolviendo el estado de terminación al proceso padre. Su prototipo es:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">void</span> <span class="nf">_exit</span><span class="p">(</span><span class="kt">int</span> <span class="n">status</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>El argumento <code class="language-plaintext highlighter-rouge">status</code> define el estado de terminación del proceso, disponible para el padre cuando invoca <code class="language-plaintext highlighter-rouge">wait()</code>. Solo los 8 bits menos significativos del estado están disponibles para el padre. Por convención:</p>
+
+<ul>
+  <li>Un estado de <code class="language-plaintext highlighter-rouge">0</code> indica que el proceso se completó correctamente.</li>
+  <li>Un valor distinto de cero indica que el proceso terminó con error.</li>
+</ul>
+
+<h2 id="exit"><code class="language-plaintext highlighter-rouge">exit()</code></h2>
+
+<p>La función <code class="language-plaintext highlighter-rouge">exit()</code> realiza varias acciones antes de invocar internamente a <code class="language-plaintext highlighter-rouge">_exit()</code>. Se encarga de retirar los recursos que está utilizando el proceso, dejarlo preparado para su eliminación, quitarlo del planificador e indicar su terminación al padre mediante la señal <code class="language-plaintext highlighter-rouge">SIGCHLD</code>. Su prototipo es:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="kt">void</span> <span class="nf">exit</span><span class="p">(</span><span class="kt">int</span> <span class="n">status</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>En GNU/Linux, si el proceso que termina no tuviera padre (porque este acabó antes), sería adoptado por el proceso 1 (<code class="language-plaintext highlighter-rouge">init</code> o <code class="language-plaintext highlighter-rouge">systemd</code>) y eliminado directamente del planificador. Al pasar de estado activo a terminado, el proceso atraviesa un estado transitorio conocido como <strong>zombi</strong>.</p>
+
+<h2 id="diferencia-entre-exit-y-_exit">Diferencia entre <code class="language-plaintext highlighter-rouge">exit()</code> y <code class="language-plaintext highlighter-rouge">_exit()</code></h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Característica</th>
+      <th><code class="language-plaintext highlighter-rouge">exit()</code></th>
+      <th><code class="language-plaintext highlighter-rouge">_exit()</code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ejecuta funciones registradas con <code class="language-plaintext highlighter-rouge">atexit()</code></td>
+      <td>Sí</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Vacía los buffers de E/S</td>
+      <td>Sí</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Cierra descriptores de archivo</td>
+      <td>Sí</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Termina inmediatamente</td>
+      <td>No</td>
+      <td>Sí</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="ejemplo">Ejemplo</h2>
+
+<p>Programa que ilustra el uso de <code class="language-plaintext highlighter-rouge">exit()</code> con <code class="language-plaintext highlighter-rouge">wait()</code>:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">pid_t</span> <span class="n">hijo</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">estado</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">hijo</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"fallo el fork"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">hijo</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"soy el hijo con pid = %ld</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">getpid</span><span class="p">());</span>
+        <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_SUCCESS</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">estado</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">WIFEXITED</span><span class="p">(</span><span class="n">estado</span><span class="p">))</span>
+            <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"hijo termino con estado: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">WEXITSTATUS</span><span class="p">(</span><span class="n">estado</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_SUCCESS</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="qué-aprendí">¿Qué aprendí?</h2>
+
+<p>Aprendí que <code class="language-plaintext highlighter-rouge">exit()</code> es la forma preferida de terminar un proceso en C porque garantiza que los buffers de salida sean vaciados y los recursos liberados correctamente. La diferencia con <code class="language-plaintext highlighter-rouge">_exit()</code> es importante en procesos hijo creados con <code class="language-plaintext highlighter-rouge">fork()</code>, donde se recomienda usar <code class="language-plaintext highlighter-rouge">_exit()</code> para evitar que el hijo vacíe buffers que también pertenecen al padre.</p>
+
+<h2 id="cómo-podría-mejorar-esta-práctica">¿Cómo podría mejorar esta práctica?</h2>
+
+<p>Podría registrar funciones con <code class="language-plaintext highlighter-rouge">atexit()</code> para demostrar que <code class="language-plaintext highlighter-rouge">exit()</code> las ejecuta al terminar, mientras que <code class="language-plaintext highlighter-rouge">_exit()</code> no lo hace, evidenciando así la diferencia entre ambas llamadas de forma práctica.</p>
+
+<h2 id="salida-en-pantalla">Salida en pantalla</h2>
+
+<p><img src="/assets/exit.png" alt="exit1" />
+<em>Ejemplo1.</em></p>
+
+  </div>
+</main>
+
+
+  <footer>
+    Instituto de Computación, Sistemas Operativos, UTM · 2026
+  </footer>
+</body>
+</html>

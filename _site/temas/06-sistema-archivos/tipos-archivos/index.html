@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>6.3 Tipos de Archivos en Linux | Portafolio SO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fbfcee;
+      color: #343b1b;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #343b1b;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fbfcee;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: #c8d69b;
+      text-decoration: none;
+      margin-left: 2rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #fbfcee; }
+
+    .hero {
+      background: #343b1b;
+      border-bottom: 3px solid #c8d69b;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      color: #fbfcee;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span { color: #c8d69b; }
+
+    .hero p {
+      color: #a8b890;
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.8;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #f6e6a5;
+      color: #f6e6a5;
+      padding: 0.25rem 0.9rem;
+      border-radius: 2px;
+      font-size: 0.75rem;
+      margin: 0.2rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      color: #c8d69b;
+      margin-bottom: 2rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-card {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 1.8rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .post-card:hover {
+      border-color: #c8d69b;
+      transform: translateY(-1px);
+    }
+
+    .post-card h2 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-card h2 a {
+      color: #343b1b;
+      text-decoration: none;
+    }
+
+    .post-card h2 a:hover { color: #343b1b; text-decoration: underline; }
+
+    .post-card .meta {
+      color: #a8b890;
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .post-card p { color: #6b7560; font-size: 0.9rem; line-height: 1.7; }
+
+    .post-content {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 3rem;
+      line-height: 1.9;
+    }
+
+    .post-content h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-content h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #c8d69b;
+      margin: 2rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-content h3 {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .post-content p {
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .post-content a {
+      color: #343b1b;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-content a:hover { color: #6b7560; }
+
+    .post-content code {
+      background: #f6e6a5;
+      color: #343b1b;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.86rem;
+      font-weight: 500;
+    }
+
+    .post-content pre {
+      background: #343b1b;
+      border-radius: 4px;
+      border-left: 3px solid #c8d69b;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin: 1.2rem 0;
+    }
+
+    .post-content pre code {
+      background: none;
+      color: #c8d69b;
+      font-size: 0.86rem;
+      font-weight: 400;
+    }
+
+    .post-content img {
+      max-width: 100%;
+      border-radius: 4px;
+      border: 1px solid #f6e6a5;
+      margin: 1.5rem 0;
+    }
+
+    .post-content ul, .post-content ol {
+      padding-left: 1.5rem;
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      color: #a8b890;
+      font-size: 0.78rem;
+      border-top: 1px solid #f6e6a5;
+      margin-top: 5rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">Portafolio · Sistemas Operativos</a>
+    <nav>
+      <a href="/">Inicio</a>
+    </nav>
+  </header>
+
+  <main>
+  <div class="post-content">
+    <div style="margin-bottom:1.5rem;">
+      
+      <a href="/temas/06-sistema-archivos/" style="color:#343b1b; text-decoration:underline; font-size:0.85rem; letter-spacing:0.04em;">
+        ← Volver a 6. Sistema de Archivos
+      </a>
+      
+    </div>
+
+    <h1 style="font-size:1.7rem; font-weight:600; color:#343b1b; margin-bottom:0.3rem;">
+      6.3 Tipos de Archivos en Linux
+    </h1>
+    <p style="color:#a8b890; font-size:0.8rem; letter-spacing:0.05em; margin-bottom:2.5rem; text-transform:uppercase;">
+      6. Sistema de Archivos
+    </p>
+
+    <h2 id="qué-aprendí">¿Qué aprendí?</h2>
+
+<p>En Linux existen <strong>cuatro tipos principales de archivos</strong>:</p>
+
+<p><strong>1. Archivos ordinarios (regulares)</strong>
+Contienen bytes organizados como un arreglo lineal. Se pueden leer, escribir, añadir bytes al final o truncar. No se permite insertar bytes en medio ni borrar bytes individuales.</p>
+
+<p><strong>2. Directorios</strong>
+Permiten estructurar jerárquicamente el sistema de archivos. Su función es relacionar nombres de archivos con su número de inodo correspondiente. El par inodo-nombre es conocido como <em>enlace (link)</em>. Solo el kernel puede modificar directorios directamente.</p>
+
+<p><strong>3. Archivos especiales (de dispositivos)</strong>
+Permiten a los procesos comunicarse con periféricos. Hay dos subtipos:</p>
+<ul>
+  <li><strong>Modo bloque</strong>: trabajan con conjuntos de 512 bytes (ej. discos duros, memorias USB).</li>
+  <li><strong>Modo carácter</strong>: información como secuencia de bytes sin buffer caché (ej. terminales, teclados, impresoras).</li>
+</ul>
+
+<p><strong>4. Archivos de comunicación (tuberías/pipes)</strong>
+Similares a archivos ordinarios, pero sus datos son <strong>transitorios</strong>. Se usan para comunicar procesos en modo FIFO (first in, first out). La sincronización del acceso es responsabilidad del kernel.</p>
+
+<p>Para identificar el tipo de archivo en C, se usa el campo <code class="language-plaintext highlighter-rouge">st_mode</code> de la estructura <code class="language-plaintext highlighter-rouge">stat</code> con las máscaras definidas:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">switch</span> <span class="p">(</span><span class="n">sb</span><span class="p">.</span><span class="n">st_mode</span> <span class="o">&amp;</span> <span class="n">S_IFMT</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">S_IFREG</span><span class="p">:</span>  <span class="n">printf</span><span class="p">(</span><span class="s">"Regular</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>                <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="n">S_IFDIR</span><span class="p">:</span>  <span class="n">printf</span><span class="p">(</span><span class="s">"Directorio</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>             <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="n">S_IFCHR</span><span class="p">:</span>  <span class="n">printf</span><span class="p">(</span><span class="s">"Dispositivo de Caracter</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span><span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="n">S_IFBLK</span><span class="p">:</span>  <span class="n">printf</span><span class="p">(</span><span class="s">"Dispositivo de Bloque</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>  <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="n">S_IFIFO</span><span class="p">:</span>  <span class="n">printf</span><span class="p">(</span><span class="s">"FIFO/pipe</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>              <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="n">S_IFLNK</span><span class="p">:</span>  <span class="n">printf</span><span class="p">(</span><span class="s">"Enlace simbólico</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>       <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="n">S_IFSOCK</span><span class="p">:</span> <span class="n">printf</span><span class="p">(</span><span class="s">"Socket</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>                 <span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Para listar el contenido de un directorio en C se usan <code class="language-plaintext highlighter-rouge">opendir()</code> y <code class="language-plaintext highlighter-rouge">readdir()</code>:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DIR</span> <span class="o">*</span><span class="n">dir</span> <span class="o">=</span> <span class="n">opendir</span><span class="p">(</span><span class="s">"/home/usuario"</span><span class="p">);</span>
+<span class="k">struct</span> <span class="n">dirent</span> <span class="o">*</span><span class="n">entrada</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">((</span><span class="n">entrada</span> <span class="o">=</span> <span class="n">readdir</span><span class="p">(</span><span class="n">dir</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">entrada</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">);</span>
+<span class="n">closedir</span><span class="p">(</span><span class="n">dir</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="cómo-podría-mejorar-esta-práctica">¿Cómo podría mejorar esta práctica?</h2>
+
+<p>Extender el programa para mostrar el tipo de cada archivo junto a su nombre, usando tanto las macros <code class="language-plaintext highlighter-rouge">S_ISREG</code>, <code class="language-plaintext highlighter-rouge">S_ISDIR</code>, etc., como el campo <code class="language-plaintext highlighter-rouge">d_type</code> de la estructura <code class="language-plaintext highlighter-rouge">dirent</code>.</p>
+
+<h2 id="salida-en-pantalla">Salida en pantalla</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> /dev | <span class="nb">head</span> <span class="nt">-10</span>
+crw-rw-rw-  1 root  <span class="nb">tty  </span>5, 0 May 15 10:00 <span class="nb">tty
+</span>brw-rw----  1 root disk  8, 0 May 15 10:00 sda
+brw-rw----  1 root disk  8, 1 May 15 10:00 sda1
+prw-r--r--  1 usuario  0 May 15 10:00 mi_pipe
+</code></pre></div></div>
+<p>La primera letra indica: <code class="language-plaintext highlighter-rouge">c</code>=carácter, <code class="language-plaintext highlighter-rouge">b</code>=bloque, <code class="language-plaintext highlighter-rouge">p</code>=pipe, <code class="language-plaintext highlighter-rouge">-</code>=regular, <code class="language-plaintext highlighter-rouge">d</code>=directorio.</p>
+
+  </div>
+</main>
+
+
+  <footer>
+    Instituto de Computación, Sistemas Operativos, UTM · 2026
+  </footer>
+</body>
+</html>

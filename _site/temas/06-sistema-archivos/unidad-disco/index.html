@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>6.4.2 Unidad de Disco | Portafolio SO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fbfcee;
+      color: #343b1b;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #343b1b;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fbfcee;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: #c8d69b;
+      text-decoration: none;
+      margin-left: 2rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #fbfcee; }
+
+    .hero {
+      background: #343b1b;
+      border-bottom: 3px solid #c8d69b;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      color: #fbfcee;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span { color: #c8d69b; }
+
+    .hero p {
+      color: #a8b890;
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.8;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #f6e6a5;
+      color: #f6e6a5;
+      padding: 0.25rem 0.9rem;
+      border-radius: 2px;
+      font-size: 0.75rem;
+      margin: 0.2rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      color: #c8d69b;
+      margin-bottom: 2rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-card {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 1.8rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .post-card:hover {
+      border-color: #c8d69b;
+      transform: translateY(-1px);
+    }
+
+    .post-card h2 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-card h2 a {
+      color: #343b1b;
+      text-decoration: none;
+    }
+
+    .post-card h2 a:hover { color: #343b1b; text-decoration: underline; }
+
+    .post-card .meta {
+      color: #a8b890;
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .post-card p { color: #6b7560; font-size: 0.9rem; line-height: 1.7; }
+
+    .post-content {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 3rem;
+      line-height: 1.9;
+    }
+
+    .post-content h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-content h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #c8d69b;
+      margin: 2rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-content h3 {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .post-content p {
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .post-content a {
+      color: #343b1b;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-content a:hover { color: #6b7560; }
+
+    .post-content code {
+      background: #f6e6a5;
+      color: #343b1b;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.86rem;
+      font-weight: 500;
+    }
+
+    .post-content pre {
+      background: #343b1b;
+      border-radius: 4px;
+      border-left: 3px solid #c8d69b;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin: 1.2rem 0;
+    }
+
+    .post-content pre code {
+      background: none;
+      color: #c8d69b;
+      font-size: 0.86rem;
+      font-weight: 400;
+    }
+
+    .post-content img {
+      max-width: 100%;
+      border-radius: 4px;
+      border: 1px solid #f6e6a5;
+      margin: 1.5rem 0;
+    }
+
+    .post-content ul, .post-content ol {
+      padding-left: 1.5rem;
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      color: #a8b890;
+      font-size: 0.78rem;
+      border-top: 1px solid #f6e6a5;
+      margin-top: 5rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">Portafolio · Sistemas Operativos</a>
+    <nav>
+      <a href="/">Inicio</a>
+    </nav>
+  </header>
+
+  <main>
+  <div class="post-content">
+    <div style="margin-bottom:1.5rem;">
+      
+      <a href="/temas/06-sistema-archivos/" style="color:#343b1b; text-decoration:underline; font-size:0.85rem; letter-spacing:0.04em;">
+        ← Volver a 6. Sistema de Archivos
+      </a>
+      
+    </div>
+
+    <h1 style="font-size:1.7rem; font-weight:600; color:#343b1b; margin-bottom:0.3rem;">
+      6.4.2 Unidad de Disco
+    </h1>
+    <p style="color:#a8b890; font-size:0.8rem; letter-spacing:0.05em; margin-bottom:2.5rem; text-transform:uppercase;">
+      6. Sistema de Archivos
+    </p>
+
+    <h2 id="qué-aprendí">¿Qué aprendí?</h2>
+
+<p>Una <strong>unidad de disco</strong> es un medio magnético que almacena datos organizados en:</p>
+
+<ul>
+  <li><strong>Pistas</strong>: círculos concéntricos en el plato magnético</li>
+  <li><strong>Sectores</strong>: divisiones de las pistas, generalmente de <strong>512 bytes</strong> (la unidad mínima de lectura/escritura)</li>
+</ul>
+
+<p>Los tiempos relevantes en una operación de disco son:</p>
+<ul>
+  <li><strong>Tiempo de búsqueda</strong>: tiempo en posicionar los cabezales en la pista correcta</li>
+  <li><strong>Retardo de giro (latencia rotacional)</strong>: tiempo en alinear el sector correcto con la cabeza</li>
+  <li><strong>Tiempo de acceso</strong>: suma de los dos anteriores</li>
+</ul>
+
+<p>Cada <strong>partición</strong> del disco es tratada por el kernel como un dispositivo separado en <code class="language-plaintext highlighter-rouge">/dev</code>. Las particiones contienen generalmente un sistema de archivos y un área de swap.</p>
+
+<p>Comandos útiles para explorar el disco:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Velocidad de lectura del disco</span>
+<span class="nv">$ </span><span class="nb">sudo </span>hdparm <span class="nt">-t</span> /dev/sda
+Timing buffered disk reads: 186 MB <span class="k">in </span>3.01 seconds <span class="o">=</span> 61.83 MB/sec
+
+<span class="c"># Área de swap</span>
+<span class="nv">$ </span>swapon
+NAME      TYPE      SIZE  USED PRIO
+/dev/dm-1 partition 976M 13.4M   <span class="nt">-2</span>
+
+<span class="c"># Uso de memoria incluyendo swap</span>
+<span class="nv">$ </span>free <span class="nt">-h</span>
+              total   usado  libre  compartido  caché  disponible
+Memoria:      7.6G    3.3G   408M       549M    3.9G       3.5G
+Swap:         975M     13M   962M
+</code></pre></div></div>
+
+<p>Otros comandos útiles: <code class="language-plaintext highlighter-rouge">df</code> (espacio libre), <code class="language-plaintext highlighter-rouge">du</code> (uso por directorio), <code class="language-plaintext highlighter-rouge">lsblk</code> (dispositivos de bloque), <code class="language-plaintext highlighter-rouge">blkid</code> (UUIDs de particiones), <code class="language-plaintext highlighter-rouge">fsck</code> (verificar sistema de archivos).</p>
+
+<h2 id="cómo-podría-mejorar-esta-práctica">¿Cómo podría mejorar esta práctica?</h2>
+
+<p>Instalar y explorar las herramientas de monitoreo sugeridas: <code class="language-plaintext highlighter-rouge">iotop</code> para ver E/S por proceso, <code class="language-plaintext highlighter-rouge">iostat</code> para estadísticas de dispositivos, y <code class="language-plaintext highlighter-rouge">dstat</code> para una vista consolidada de recursos del sistema.</p>
+
+<h2 id="salida-en-pantalla">Salida en pantalla</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>lsblk
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda      8:0    0 465.8G  0 disk
+├─sda1   8:1    0   512M  0 part /boot/efi
+├─sda2   8:2    0   488M  0 part /boot
+└─sda3   8:3    0 464.8G  0 part
+  ├─dm-0       0 463.9G  0 lvm  /
+  └─dm-1       0   976M  0 lvm  <span class="o">[</span>SWAP]
+</code></pre></div></div>
+
+  </div>
+</main>
+
+
+  <footer>
+    Instituto de Computación, Sistemas Operativos, UTM · 2026
+  </footer>
+</body>
+</html>

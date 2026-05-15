@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1. Introducción al Sistema Operativo Linux | Portafolio SO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fbfcee;
+      color: #343b1b;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #343b1b;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fbfcee;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: #c8d69b;
+      text-decoration: none;
+      margin-left: 2rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #fbfcee; }
+
+    .hero {
+      background: #343b1b;
+      border-bottom: 3px solid #c8d69b;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      color: #fbfcee;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span { color: #c8d69b; }
+
+    .hero p {
+      color: #a8b890;
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.8;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #f6e6a5;
+      color: #f6e6a5;
+      padding: 0.25rem 0.9rem;
+      border-radius: 2px;
+      font-size: 0.75rem;
+      margin: 0.2rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      color: #c8d69b;
+      margin-bottom: 2rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-card {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 1.8rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .post-card:hover {
+      border-color: #c8d69b;
+      transform: translateY(-1px);
+    }
+
+    .post-card h2 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-card h2 a {
+      color: #343b1b;
+      text-decoration: none;
+    }
+
+    .post-card h2 a:hover { color: #343b1b; text-decoration: underline; }
+
+    .post-card .meta {
+      color: #a8b890;
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .post-card p { color: #6b7560; font-size: 0.9rem; line-height: 1.7; }
+
+    .post-content {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 3rem;
+      line-height: 1.9;
+    }
+
+    .post-content h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-content h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #c8d69b;
+      margin: 2rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-content h3 {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .post-content p {
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .post-content a {
+      color: #343b1b;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-content a:hover { color: #6b7560; }
+
+    .post-content code {
+      background: #f6e6a5;
+      color: #343b1b;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.86rem;
+      font-weight: 500;
+    }
+
+    .post-content pre {
+      background: #343b1b;
+      border-radius: 4px;
+      border-left: 3px solid #c8d69b;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin: 1.2rem 0;
+    }
+
+    .post-content pre code {
+      background: none;
+      color: #c8d69b;
+      font-size: 0.86rem;
+      font-weight: 400;
+    }
+
+    .post-content img {
+      max-width: 100%;
+      border-radius: 4px;
+      border: 1px solid #f6e6a5;
+      margin: 1.5rem 0;
+    }
+
+    .post-content ul, .post-content ol {
+      padding-left: 1.5rem;
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      color: #a8b890;
+      font-size: 0.78rem;
+      border-top: 1px solid #f6e6a5;
+      margin-top: 5rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">Portafolio · Sistemas Operativos</a>
+    <nav>
+      <a href="/">Inicio</a>
+    </nav>
+  </header>
+
+  <main>
+  <div class="post-content">
+    <div style="margin-bottom:1.5rem;">
+      <a href="/" style="color:#343b1b; text-decoration:underline; font-size:0.85rem; letter-spacing:0.04em;">← Volver al inicio</a>
+    </div>
+
+    <h1 style="font-size:1.7rem; font-weight:600; color:#343b1b; margin-bottom:0.3rem;">
+      1. Introducción al Sistema Operativo Linux
+    </h1>
+    <p style="color:#a8b890; font-size:0.8rem; letter-spacing:0.05em; margin-bottom:2.5rem; text-transform:uppercase;">
+      Fundamentos del sistema operativo Linux
+    </p>
+
+    <h2 id="sobre-este-tema">Sobre este tema</h2>
+
+<p>Introducción general al sistema operativo Linux: su historia, estructura,
+comandos básicos y clasificación dentro de los sistemas operativos modernos.</p>
+
+<hr />
+
+<p>Linux es un sistema operativo de código abierto basado en Unix, creado en 1991 por el estudiante finlandés Linus Torvalds. Lo que comenzó como un proyecto personal se convirtió en uno de los sistemas operativos más importantes e influyentes del mundo.</p>
+
+<p>Un sistema operativo es el software fundamental que actúa como intermediario entre el hardware y el usuario. Sin él, ningún programa podría ejecutarse. Linux se destaca por ser de código abierto, lo que significa que su código fuente es público y cualquiera puede estudiarlo, modificarlo y distribuirlo libremente. Además, es multiusuario y multitarea, permitiendo que varios usuarios trabajen simultáneamente ejecutando múltiples procesos. Es reconocido por su seguridad, estabilidad y portabilidad, funcionando en una enorme variedad de hardware, desde supercomputadoras hasta teléfonos Android, y en la mayoría de sus distribuciones es completamente gratuito.</p>
+
+<p>Su estructura se compone de tres capas fundamentales: el Kernel, que es el núcleo del sistema y gestiona el hardware, la memoria y los procesos; el Shell, que es la interfaz entre el usuario y el kernel; y las Aplicaciones, que son los programas que el usuario utiliza directamente.</p>
+
+<p>Linux no viene en una sola versión, sino en múltiples distribuciones o “distros” adaptadas a diferentes necesidades. Entre las más populares se encuentran Ubuntu, ideal para principiantes; Debian, orientado a servidores; Fedora, preferido por desarrolladores; Arch Linux, para usuarios avanzados; y Kali Linux, especializado en ciberseguridad.</p>
+
+<p>Hoy en día, Linux está en todas partes: el 90% de los servidores web del mundo lo utilizan, es la base del sistema operativo Android, impulsa supercomputadoras, dispositivos IoT y sistemas embebidos. Sin duda, Linux es la columna vertebral de la infraestructura tecnológica moderna.</p>
+
+<hr />
+
+<h2 id="comparación-con-otros-sistemas-operativos">Comparación con otros sistemas operativos</h2>
+
+<p>Para entender mejor qué hace especial a Linux, es útil compararlo con los sistemas operativos más utilizados en el mundo: Windows y macOS.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Característica</th>
+      <th>Linux</th>
+      <th>Windows</th>
+      <th>macOS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Código fuente</td>
+      <td>Abierto (GPL)</td>
+      <td>Cerrado</td>
+      <td>Parcialmente abierto</td>
+    </tr>
+    <tr>
+      <td>Costo</td>
+      <td>Gratuito</td>
+      <td>De pago</td>
+      <td>Gratuito (requiere hardware Apple)</td>
+    </tr>
+    <tr>
+      <td>Seguridad</td>
+      <td>Alta</td>
+      <td>Media</td>
+      <td>Alta</td>
+    </tr>
+    <tr>
+      <td>Personalización</td>
+      <td>Total</td>
+      <td>Limitada</td>
+      <td>Limitada</td>
+    </tr>
+    <tr>
+      <td>Uso principal</td>
+      <td>Servidores, desarrollo</td>
+      <td>Uso doméstico y empresarial</td>
+      <td>Diseño, uso doméstico</td>
+    </tr>
+    <tr>
+      <td>Interfaz</td>
+      <td>Terminal y gráfica</td>
+      <td>Gráfica</td>
+      <td>Gráfica</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Windows es el sistema más utilizado en computadoras personales por su facilidad de uso, pero es de código cerrado y requiere licencia de pago. macOS, desarrollado por Apple, ofrece una experiencia muy pulida pero está limitado al hardware de la misma empresa. Linux, en cambio, es completamente libre, altamente personalizable y domina en entornos de servidores, desarrollo de software y cómputo científico.</p>
+
+<hr />
+
+<h2 id="comandos-básicos-en-linux">Comandos básicos en Linux</h2>
+
+<p>La interacción con Linux se realiza principalmente a través de la terminal, también llamada línea de comandos. A continuación se presentan los comandos esenciales para comenzar.</p>
+
+<h3 id="navegación-del-sistema-de-archivos">Navegación del sistema de archivos</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pwd</span>        <span class="c"># Muestra el directorio actual en el que te encuentras</span>
+<span class="nb">ls</span>         <span class="c"># Lista los archivos y carpetas del directorio actual</span>
+<span class="nb">ls</span> <span class="nt">-la</span>     <span class="c"># Lista todos los archivos, incluyendo ocultos, con detalles</span>
+<span class="nb">cd</span> /ruta   <span class="c"># Cambia al directorio especificado</span>
+<span class="nb">cd</span> ..      <span class="c"># Sube un nivel en la jerarquía de directorios</span>
+<span class="nb">cd</span> ~       <span class="c"># Regresa al directorio personal del usuario</span>
+</code></pre></div></div>
+
+<h3 id="gestión-de-archivos-y-directorios">Gestión de archivos y directorios</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>nombre       <span class="c"># Crea un nuevo directorio</span>
+<span class="nb">touch </span>archivo.txt  <span class="c"># Crea un archivo vacío</span>
+<span class="nb">cp </span>origen destino  <span class="c"># Copia un archivo o directorio</span>
+<span class="nb">mv </span>origen destino  <span class="c"># Mueve o renombra un archivo</span>
+<span class="nb">rm </span>archivo.txt     <span class="c"># Elimina un archivo</span>
+<span class="nb">rm</span> <span class="nt">-r</span> carpeta      <span class="c"># Elimina una carpeta y su contenido</span>
+</code></pre></div></div>
+
+<h3 id="información-del-sistema">Información del sistema</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">whoami</span>     <span class="c"># Muestra el nombre del usuario actual</span>
+<span class="nb">uname</span> <span class="nt">-a</span>   <span class="c"># Muestra información completa del sistema</span>
+man <span class="nb">ls</span>     <span class="c"># Abre el manual del comando especificado (en este caso, ls)</span>
+clear      <span class="c"># Limpia la pantalla de la terminal</span>
+</code></pre></div></div>
+
+<h3 id="práctica-guiada">Práctica guiada</h3>
+
+<p>Sigue estos pasos en la terminal para poner en práctica los comandos anteriores:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 1. Verifica en qué directorio estás</span>
+<span class="nb">pwd</span>
+
+<span class="c"># 2. Crea una carpeta llamada "practica"</span>
+<span class="nb">mkdir </span>practica
+
+<span class="c"># 3. Entra a esa carpeta</span>
+<span class="nb">cd </span>practica
+
+<span class="c"># 4. Crea un archivo de texto</span>
+<span class="nb">touch </span>mi_primer_archivo.txt
+
+<span class="c"># 5. Verifica que se creó</span>
+<span class="nb">ls</span>
+
+<span class="c"># 6. Regresa al directorio anterior</span>
+<span class="nb">cd</span> ..
+</code></pre></div></div>
+
+
+    
+  </div>
+</main>
+
+
+  <footer>
+    Instituto de Computación, Sistemas Operativos, UTM · 2026
+  </footer>
+</body>
+</html>

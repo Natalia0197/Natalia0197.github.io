@@ -5,6 +5,7 @@ layout: default
 <div class="hero">
   <h1>Portafolio de <span>Sistemas Operativos</span></h1>
   <p>Prácticas y reflexiones del curso — Universidad Tecnológica de la Mixteca</p>
+  <p>Autora: Natalia de los Ángeles Sánchez Maceda</p>
   <span class="badge">🐧 Linux</span>
   <span class="badge">⚙️ Procesos</span>
   <span class="badge">🔗 IPC</span>
@@ -15,9 +16,16 @@ layout: default
 </div>
 
 <main>
+  <div class="post-content" style="margin-bottom: 3rem;">
+    <h2 style="font-size:1.1rem; font-weight:600; color:#c8d69b; margin-bottom:1.2rem; padding-bottom:0.4rem; border-bottom:1px solid #f6e6a5;">Prólogo</h2>
+    <p>Este portafolio reúne las prácticas desarrolladas a lo largo del curso de Sistemas Operativos, mismas que cuentan con una breve reflexión para demostrar el aprendezaje adquirido a lo largo del curso. A través de cada tema, se exploran los mecanismos fundamentales que permiten a un sistema operativo administrar los recursos de cómputo: desde la creación y comunicación de procesos, pasando por la gestión de memoria y el sistema de archivos, hasta el manejo de señales asíncronas.</p>
+    <p>El material se basa en el texto <em>Un vistazo a los Sistemas Operativos</em> del M.C. Gabriel Gerónimo C. del Instituto de Computación de la UTM, complementado con la exploración práctica del entorno GNU/Linux. Cada sección documenta lo aprendido, el código desarrollado y reflexiones sobre cómo profundizar en cada tema.</p>
+    <p>Los temas están organizados de forma progresiva: iniciando con los fundamentos de Linux, avanzando por procesos e hilos, mecanismos de IPC, administración de memoria, arquitectura del sistema de archivos y finalizando con el manejo de señales. Se espera que este portafolio sirva como referencia de consulta y evidencia del aprendizaje adquirido durante el semestre.</p>
+  </div>
+
   <h2 class="section-title">Temas del curso</h2>
 
-  {% assign temas_ordenados = site.temas | sort: "orden" %}
+  {% assign temas_ordenados = site.temas | where_exp: "t", "t.name == 'index.md'" | sort: "orden" %}
   {% for tema in temas_ordenados %}
   <div class="post-card">
     <div class="meta">Tema {{ tema.orden }}</div>
@@ -25,4 +33,22 @@ layout: default
     <p>{{ tema.descripcion }}</p>
   </div>
   {% endfor %}
+
+  <!-- Panel de práctica: Mini Bash -->
+  <h2 class="section-title" style="margin-top: 3rem;">Práctica destacada</h2>
+
+  <div class="post-card" style="border-color: #c8d69b;">
+    <div class="meta">Práctica · Tema 1 — Introducción a Linux</div>
+    <h2>Mini Bash en C</h2>
+    <p>Implementación de una mini shell en C que reproduce el comportamiento de comandos reales de Linux mediante llamadas al sistema. Se desarrollaron 19 comandos propios incluyendo <code>ls</code>, <code>cd</code>, <code>pwd</code>, <code>stat</code>, <code>find</code>, <code>df</code>, <code>free</code>, <code>uname</code>, <code>who</code>, <code>ip</code> y <code>mac</code>, entre otros.</p>
+
+    <div style="margin-top: 1.2rem;">
+      <p style="font-size:0.8rem; color:#a8b890; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:0.6rem;">Lo que aprendí</p>
+      <p>Este proyecto me permitió aplicar directamente las llamadas al sistema de Linux que el kernel expone al espacio de usuario: <code>stat()</code>, <code>getcwd()</code>, <code>chdir()</code>, <code>readdir()</code>, <code>statvfs()</code> y <code>uname()</code>, entre otras. Trabajé con estructuras reales del sistema como <code>struct stat</code>, <code>struct utsname</code> y <code>struct utmpx</code>, y aprendí a consultar información de red a bajo nivel usando sockets e <code>ioctl()</code>. Implementar <code>find</code> de forma recursiva me ayudó a entender cómo el sistema operativo organiza el árbol de directorios.</p>
+
+      <p style="font-size:0.8rem; color:#a8b890; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:0.6rem; margin-top:1rem;">Cómo podría mejorarse</p>
+      <p>Se podría agregar soporte de flags en comandos como <code>ls -la</code>, implementar un historial de comandos con la flecha arriba, y añadir pipes y redirección (<code>|</code>, <code>&gt;</code>) para acercar la shell a cómo funciona bash realmente. También sería valioso manejar señales como <code>SIGINT</code> y <code>SIGTSTP</code> para controlar procesos con Ctrl+C y Ctrl+Z, conectando esta práctica directamente con el tema de señales del curso.</p>
+    </div>
+  </div>
+
 </main>

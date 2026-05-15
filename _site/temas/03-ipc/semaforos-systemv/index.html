@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3.2.2 Semáforos en System V | Portafolio SO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fbfcee;
+      color: #343b1b;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #343b1b;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fbfcee;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: #c8d69b;
+      text-decoration: none;
+      margin-left: 2rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #fbfcee; }
+
+    .hero {
+      background: #343b1b;
+      border-bottom: 3px solid #c8d69b;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      color: #fbfcee;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span { color: #c8d69b; }
+
+    .hero p {
+      color: #a8b890;
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.8;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #f6e6a5;
+      color: #f6e6a5;
+      padding: 0.25rem 0.9rem;
+      border-radius: 2px;
+      font-size: 0.75rem;
+      margin: 0.2rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      color: #c8d69b;
+      margin-bottom: 2rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-card {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 1.8rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .post-card:hover {
+      border-color: #c8d69b;
+      transform: translateY(-1px);
+    }
+
+    .post-card h2 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-card h2 a {
+      color: #343b1b;
+      text-decoration: none;
+    }
+
+    .post-card h2 a:hover { color: #343b1b; text-decoration: underline; }
+
+    .post-card .meta {
+      color: #a8b890;
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .post-card p { color: #6b7560; font-size: 0.9rem; line-height: 1.7; }
+
+    .post-content {
+      background: #ffffff;
+      border: 1px solid #f6e6a5;
+      border-radius: 4px;
+      padding: 3rem;
+      line-height: 1.9;
+    }
+
+    .post-content h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin-bottom: 0.4rem;
+    }
+
+    .post-content h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #c8d69b;
+      margin: 2rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #f6e6a5;
+    }
+
+    .post-content h3 {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: #343b1b;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .post-content p {
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .post-content a {
+      color: #343b1b;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-content a:hover { color: #6b7560; }
+
+    .post-content code {
+      background: #f6e6a5;
+      color: #343b1b;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.86rem;
+      font-weight: 500;
+    }
+
+    .post-content pre {
+      background: #343b1b;
+      border-radius: 4px;
+      border-left: 3px solid #c8d69b;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin: 1.2rem 0;
+    }
+
+    .post-content pre code {
+      background: none;
+      color: #c8d69b;
+      font-size: 0.86rem;
+      font-weight: 400;
+    }
+
+    .post-content img {
+      max-width: 100%;
+      border-radius: 4px;
+      border: 1px solid #f6e6a5;
+      margin: 1.5rem 0;
+    }
+
+    .post-content ul, .post-content ol {
+      padding-left: 1.5rem;
+      color: #4a5240;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      color: #a8b890;
+      font-size: 0.78rem;
+      border-top: 1px solid #f6e6a5;
+      margin-top: 5rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">Portafolio · Sistemas Operativos</a>
+    <nav>
+      <a href="/">Inicio</a>
+    </nav>
+  </header>
+
+  <main>
+  <div class="post-content">
+    <div style="margin-bottom:1.5rem;">
+      
+      <a href="/temas/03-ipc/" style="color:#343b1b; text-decoration:underline; font-size:0.85rem; letter-spacing:0.04em;">
+        ← Volver a 3. IPC
+      </a>
+      
+    </div>
+
+    <h1 style="font-size:1.7rem; font-weight:600; color:#343b1b; margin-bottom:0.3rem;">
+      3.2.2 Semáforos en System V
+    </h1>
+    <p style="color:#a8b890; font-size:0.8rem; letter-spacing:0.05em; margin-bottom:2.5rem; text-transform:uppercase;">
+      3. IPC
+    </p>
+
+    <p>Los semáforos son mecanismos utilizados por los sistemas para sincronizar el acceso a recursos compartidos. En los sistemas derivados de System V, los semáforos se implementan en el kernel para garantizar que las operaciones de incremento y decremento sean <strong>atómicas</strong>.</p>
+
+<p>En System V un semáforo no es un simple valor, sino un <strong>conjunto de valores enteros no negativos</strong>, donde cada valor puede asumir cualquier número no negativo hasta un máximo definido por el sistema.</p>
+
+<h2 id="funciones-principales">Funciones principales</h2>
+
+<h3 id="semget--crear-o-acceder-a-un-conjunto-de-semáforos"><code class="language-plaintext highlighter-rouge">semget()</code> — Crear o acceder a un conjunto de semáforos</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/ipc.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/sem.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">semget</span><span class="p">(</span><span class="n">key_t</span> <span class="n">key</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nsems</span><span class="p">,</span> <span class="kt">int</span> <span class="n">semflg</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Retorna el identificador del conjunto de semáforos en caso de éxito, o <code class="language-plaintext highlighter-rouge">-1</code> en caso de error. Los parámetros son:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">key</code>: llave generada con <code class="language-plaintext highlighter-rouge">ftok()</code>, o <code class="language-plaintext highlighter-rouge">IPC_PRIVATE</code> para crear un semáforo privado.</li>
+  <li><code class="language-plaintext highlighter-rouge">nsems</code>: número de semáforos en el conjunto.</li>
+  <li><code class="language-plaintext highlighter-rouge">semflg</code>: máscara de bits con <code class="language-plaintext highlighter-rouge">IPC_CREAT</code>, <code class="language-plaintext highlighter-rouge">IPC_EXCL</code> y permisos (ej. <code class="language-plaintext highlighter-rouge">0600</code>).</li>
+</ul>
+
+<h3 id="semop--operar-sobre-semáforos"><code class="language-plaintext highlighter-rouge">semop()</code> — Operar sobre semáforos</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/ipc.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/sem.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">semop</span><span class="p">(</span><span class="kt">int</span> <span class="n">semid</span><span class="p">,</span> <span class="k">struct</span> <span class="n">sembuf</span> <span class="o">*</span><span class="n">sops</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">nsops</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Realiza operaciones atómicas sobre los semáforos. Cada operación se especifica con una estructura <code class="language-plaintext highlighter-rouge">sembuf</code>:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">sembuf</span> <span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">sem_num</span><span class="p">;</span>  <span class="cm">/* número de semáforo en el conjunto */</span>
+    <span class="kt">short</span> <span class="n">sem_op</span><span class="p">;</span>            <span class="cm">/* operación: positivo=incrementar, negativo=decrementar, 0=esperar cero */</span>
+    <span class="kt">short</span> <span class="n">sem_flg</span><span class="p">;</span>           <span class="cm">/* banderas: IPC_NOWAIT, SEM_UNDO */</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h3 id="semctl--controlar-semáforos"><code class="language-plaintext highlighter-rouge">semctl()</code> — Controlar semáforos</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/ipc.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/sem.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">semctl</span><span class="p">(</span><span class="kt">int</span> <span class="n">semid</span><span class="p">,</span> <span class="kt">int</span> <span class="n">semnum</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cmd</span><span class="p">,</span> <span class="k">union</span> <span class="n">semun</span> <span class="n">arg</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Permite inicializar, consultar, modificar y eliminar semáforos. Comandos más usados:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">SETVAL</code>: inicializa un semáforo a un valor determinado.</li>
+  <li><code class="language-plaintext highlighter-rouge">GETVAL</code>: lee el valor de un semáforo.</li>
+  <li><code class="language-plaintext highlighter-rouge">IPC_RMID</code>: elimina el conjunto de semáforos.</li>
+</ul>
+
+<h2 id="ejemplo-sincronización-padre-hijo-con-semáforos">Ejemplo: sincronización padre-hijo con semáforos</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/ipc.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/sem.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#define SEM_HIJO  0
+#define SEM_PADRE 1
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">semid</span><span class="p">;</span>
+    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">sembuf</span> <span class="n">operacion</span><span class="p">;</span>
+    <span class="n">key_t</span> <span class="n">llave</span><span class="p">;</span>
+
+    <span class="n">llave</span> <span class="o">=</span> <span class="n">ftok</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="sc">'a'</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">semid</span> <span class="o">=</span> <span class="n">semget</span><span class="p">(</span><span class="n">llave</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">IPC_CREAT</span> <span class="o">|</span> <span class="mo">0600</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"semget"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">semctl</span><span class="p">(</span><span class="n">semid</span><span class="p">,</span> <span class="n">SEM_HIJO</span><span class="p">,</span>  <span class="n">SETVAL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="cm">/* semáforo hijo cerrado  */</span>
+    <span class="n">semctl</span><span class="p">(</span><span class="n">semid</span><span class="p">,</span> <span class="n">SEM_PADRE</span><span class="p">,</span> <span class="n">SETVAL</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="cm">/* semáforo padre abierto */</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"fork"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Proceso hijo */</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">operacion</span><span class="p">.</span><span class="n">sem_num</span> <span class="o">=</span> <span class="n">SEM_HIJO</span><span class="p">;</span>
+            <span class="n">operacion</span><span class="p">.</span><span class="n">sem_op</span>  <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+            <span class="n">operacion</span><span class="p">.</span><span class="n">sem_flg</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">semop</span><span class="p">(</span><span class="n">semid</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">operacion</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Proceso hijo: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">i</span><span class="o">--</span><span class="p">);</span>
+
+            <span class="n">operacion</span><span class="p">.</span><span class="n">sem_num</span> <span class="o">=</span> <span class="n">SEM_PADRE</span><span class="p">;</span>
+            <span class="n">operacion</span><span class="p">.</span><span class="n">sem_op</span>  <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="n">semop</span><span class="p">(</span><span class="n">semid</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">operacion</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">semctl</span><span class="p">(</span><span class="n">semid</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">IPC_RMID</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="cm">/* Proceso padre */</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">operacion</span><span class="p">.</span><span class="n">sem_num</span> <span class="o">=</span> <span class="n">SEM_PADRE</span><span class="p">;</span>
+            <span class="n">operacion</span><span class="p">.</span><span class="n">sem_op</span>  <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+            <span class="n">operacion</span><span class="p">.</span><span class="n">sem_flg</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">semop</span><span class="p">(</span><span class="n">semid</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">operacion</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Proceso padre: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">i</span><span class="o">--</span><span class="p">);</span>
+
+            <span class="n">operacion</span><span class="p">.</span><span class="n">sem_num</span> <span class="o">=</span> <span class="n">SEM_HIJO</span><span class="p">;</span>
+            <span class="n">operacion</span><span class="p">.</span><span class="n">sem_op</span>  <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="n">semop</span><span class="p">(</span><span class="n">semid</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">operacion</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">semctl</span><span class="p">(</span><span class="n">semid</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">IPC_RMID</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h2 id="ejemplo2-semáforos-para-exclusión-mutúa">Ejemplo2: Semáforos para exclusión mutúa</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define _GNU_SOURCE
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;semaphore.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/mman.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;crypt.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;time.h&gt;</span><span class="cp">
+</span>
+<span class="cp">#define PASS_LEN 11
+</span>
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">perm</span><span class="p">[</span><span class="n">PASS_LEN</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+    <span class="kt">int</span>  <span class="n">found</span><span class="p">;</span>
+    <span class="kt">int</span>  <span class="n">done</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">SharedMem</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="n">sem_t</span> <span class="n">mutex</span><span class="p">;</span>
+    <span class="n">sem_t</span> <span class="n">listo</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">Sems</span><span class="p">;</span>
+
+<span class="cm">/* Hash real de /etc/shadow */</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">HASH_ORIGINAL</span> <span class="o">=</span>
+    <span class="c1">//"$y$j9T$U3m1aA2sioWSWkh3GCYKQ/$dGcsiTqsX2Y8RgMpJESYB1hCu.sVUN0et.897MLLoj4";</span>
+    <span class="s">"$y$j9T$QXaYnGfPtA3cgshAEKDkk0$F/VochlwTN1yhlxAhhQ9G/h4RDKV6Pjjs7CchNXgp/6"</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">swap_c</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">b</span><span class="p">)</span> <span class="p">{</span> <span class="kt">char</span> <span class="n">t</span> <span class="o">=</span> <span class="o">*</span><span class="n">a</span><span class="p">;</span> <span class="o">*</span><span class="n">a</span> <span class="o">=</span> <span class="o">*</span><span class="n">b</span><span class="p">;</span> <span class="o">*</span><span class="n">b</span> <span class="o">=</span> <span class="n">t</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">permute</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">arr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">SharedMem</span> <span class="o">*</span><span class="n">shm</span><span class="p">,</span> <span class="n">Sems</span> <span class="o">*</span><span class="n">sems</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">shm</span><span class="o">-&gt;</span><span class="n">found</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sems</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>
+        <span class="n">strncpy</span><span class="p">(</span><span class="n">shm</span><span class="o">-&gt;</span><span class="n">perm</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">PASS_LEN</span><span class="p">);</span>
+        <span class="n">shm</span><span class="o">-&gt;</span><span class="n">perm</span><span class="p">[</span><span class="n">PASS_LEN</span><span class="p">]</span> <span class="o">=</span> <span class="sc">'\0'</span><span class="p">;</span>
+        <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sems</span><span class="o">-&gt;</span><span class="n">listo</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">shm</span><span class="o">-&gt;</span><span class="n">found</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+        <span class="n">permute</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shm</span><span class="p">,</span> <span class="n">sems</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="n">swap_c</span><span class="p">(</span><span class="o">&amp;</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">arr</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="k">else</span>             <span class="n">swap_c</span><span class="p">(</span><span class="o">&amp;</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">arr</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">proceso_hijo</span><span class="p">(</span><span class="n">SharedMem</span> <span class="o">*</span><span class="n">shm</span><span class="p">,</span> <span class="n">Sems</span> <span class="o">*</span><span class="n">sems</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">local_perm</span><span class="p">[</span><span class="n">PASS_LEN</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+    <span class="kt">time_t</span> <span class="n">inicio</span><span class="p">,</span> <span class="n">fin</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">segundos</span><span class="p">;</span>
+    <span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">inicio</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Cronómetro iniciado...</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sems</span><span class="o">-&gt;</span><span class="n">listo</span><span class="p">);</span>
+
+        <span class="n">strncpy</span><span class="p">(</span><span class="n">local_perm</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">perm</span><span class="p">,</span> <span class="n">PASS_LEN</span><span class="p">);</span>
+        <span class="n">local_perm</span><span class="p">[</span><span class="n">PASS_LEN</span><span class="p">]</span> <span class="o">=</span> <span class="sc">'\0'</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">done</span> <span class="o">=</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">done</span><span class="p">;</span>
+        <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sems</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">done</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"[hijo] Contraseña no encontrada.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="cm">/* crypt() recibe la permutación y el hash completo como salt.
+           Extrae el algoritmo ($y$) y el salt automáticamente.       */</span>
+        <span class="kt">char</span> <span class="o">*</span><span class="n">resultado</span> <span class="o">=</span> <span class="n">crypt</span><span class="p">(</span><span class="n">local_perm</span><span class="p">,</span> <span class="n">HASH_ORIGINAL</span><span class="p">);</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">"[hijo] Probando: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">local_perm</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">resultado</span><span class="p">,</span> <span class="n">HASH_ORIGINAL</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">shm</span><span class="o">-&gt;</span><span class="n">found</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">fin</span><span class="p">);</span>
+            <span class="n">segundos</span> <span class="o">=</span> <span class="n">difftime</span><span class="p">(</span><span class="n">fin</span><span class="p">,</span> <span class="n">inicio</span><span class="p">);</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">[hijo] ¡ÉXITO! Contraseña encontrada: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">local_perm</span><span class="p">);</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Han transcurrido %.2f minutos.</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">segundos</span><span class="o">/</span><span class="mi">60</span><span class="p">);</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+            
+
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* La contraseña de arranque para las permutaciones.
+       Mismos 8 chars que fueron usados al crear el usuario. */</span>
+    <span class="c1">//char arr[PASS_LEN + 1] = "lmopezc7";</span>
+    
+    <span class="kt">char</span> <span class="n">arr</span><span class="p">[</span><span class="n">PASS_LEN</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s">"milly+56890"</span><span class="p">;</span>
+    
+
+    <span class="n">SharedMem</span> <span class="o">*</span><span class="n">shm</span> <span class="o">=</span> <span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">SharedMem</span><span class="p">),</span>
+                          <span class="n">PROT_READ</span> <span class="o">|</span> <span class="n">PROT_WRITE</span><span class="p">,</span>
+                          <span class="n">MAP_SHARED</span> <span class="o">|</span> <span class="n">MAP_ANONYMOUS</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">shm</span><span class="o">-&gt;</span><span class="n">found</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">done</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">Sems</span> <span class="o">*</span><span class="n">sems</span> <span class="o">=</span> <span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">Sems</span><span class="p">),</span>
+                      <span class="n">PROT_READ</span> <span class="o">|</span> <span class="n">PROT_WRITE</span><span class="p">,</span>
+                      <span class="n">MAP_SHARED</span> <span class="o">|</span> <span class="n">MAP_ANONYMOUS</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">sem_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sems</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">sem_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sems</span><span class="o">-&gt;</span><span class="n">listo</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="n">pid_t</span> <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="n">perror</span><span class="p">(</span><span class="s">"fork"</span><span class="p">);</span> <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">proceso_hijo</span><span class="p">(</span><span class="n">shm</span><span class="p">,</span> <span class="n">sems</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">permute</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">PASS_LEN</span><span class="p">,</span> <span class="n">shm</span><span class="p">,</span> <span class="n">sems</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">shm</span><span class="o">-&gt;</span><span class="n">found</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sems</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>
+            <span class="n">shm</span><span class="o">-&gt;</span><span class="n">done</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sems</span><span class="o">-&gt;</span><span class="n">listo</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">wait</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+        <span class="n">sem_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sems</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>
+        <span class="n">sem_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sems</span><span class="o">-&gt;</span><span class="n">listo</span><span class="p">);</span>
+        <span class="n">munmap</span><span class="p">(</span><span class="n">shm</span><span class="p">,</span>  <span class="k">sizeof</span><span class="p">(</span><span class="n">SharedMem</span><span class="p">));</span>
+        <span class="n">munmap</span><span class="p">(</span><span class="n">sems</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">Sems</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="qué-aprendí">¿Qué aprendí?</h2>
+
+<p>Aprendí que los semáforos de System V son más complejos que los POSIX, pero ofrecen mayor control al trabajar con conjuntos de semáforos en lugar de uno individual. La clave es entender el patrón: decrementar (<code class="language-plaintext highlighter-rouge">sem_op = -1</code>) para entrar a la sección crítica y bloquear si ya está en uso, e incrementar (<code class="language-plaintext highlighter-rouge">sem_op = 1</code>) al salir para despertar al proceso que espera.</p>
+
+<h2 id="cómo-podría-mejorar-esta-práctica">¿Cómo podría mejorar esta práctica?</h2>
+
+<p>Podría agregar un manejador de señales para <code class="language-plaintext highlighter-rouge">SIGINT</code> que llame a <code class="language-plaintext highlighter-rouge">semctl(semid, 0, IPC_RMID, 0)</code> antes de terminar, garantizando que el semáforo sea eliminado aunque el programa se interrumpa con Ctrl+C, evitando así recursos IPC huérfanos en el sistema.</p>
+
+<h2 id="salida-en-pantalla">Salida en pantalla</h2>
+
+<p><img src="/assets/sem1.png" alt="semaforo" />
+<em>Ejemplo1.</em></p>
+
+<p><img src="/assets/semaforo.png" alt="semaforo2" />
+<em>Ejemplo2.</em></p>
+
+  </div>
+</main>
+
+
+  <footer>
+    Instituto de Computación, Sistemas Operativos, UTM · 2026
+  </footer>
+</body>
+</html>
